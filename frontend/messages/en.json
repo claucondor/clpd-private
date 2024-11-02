@@ -1,0 +1,289 @@
+{
+  "navbar": {
+    "login": "Login",
+    "stableCoin": "Stable Coin",
+    "earnWithPesos": "Earn with CLPD",
+    "aboutUs": "About Us",
+    "reserve": "Reserve",
+    "deposit": "Deposit",
+    "withdraw": "Withdraw",
+    "invest": "Invest",
+    "change": "Change",
+    "logout": "Logout",
+    "backToHome": "Back to Home",
+    "bridge": "Bridge"
+  },
+  "landing": {
+    "send": "Send",
+    "receive": "Receive",
+    "enterApp": "Enter App",
+    "redeem": "Redeem",
+    "feeCLPD": "Fee in CLPD",
+    "save": "Save money",
+    "earn": {
+      "title": "Earn",
+      "description": "Save and earn interest automatically with your CLPD. Plus get direct access to international digital and real-world asset markets to further grow your investment."
+    },
+    "deposit": {
+      "title": "Deposit",
+      "description": "The first Chilean stablecoin fully backed by Chilean Pesos. Deposit Chilean Pesos from your bank account, get CLPD and unlock the best of digital money."
+    },
+    "withdraw": {
+      "title": "Withdraw",
+      "description": "Each CLPD is backed 100% by Chilean Pesos in a secure bank account. You can change them for pesos in your bank account 24 hours a day, without delay."
+    },
+    "features": {
+      "title": "The future of digital money, now",
+      "description1": "CLPD is the first and only Chilean peso stablecoin with guaranteed reserve audits and verifiable reserves. There will always be 1 CLP in reserves for every CLPD in circulation.",
+      "description2": "Using CLPD, you get instant, national and international transfers, secure and low-cost. Plus, it's programmable through smart contracts, opening infinite possibilities for its use and distribution."
+    },
+    "automate": {
+      "title": "Automate",
+      "description": "CLPD is easily programmable to be integrated into your payment flows, automated contracts, dividend distributions, and others."
+    },
+    "roadmap": {
+      "title": "Roadmap",
+      "q1": "Q1 * 2025",
+      "q1-1": {
+        "title": "Integrations",
+        "description": "with wallets, exchanges and DeFi applications to facilitate the use of the stablecoin in the onchain ecosystem."
+      },
+      "q1-2": {
+        "title": "Local Businesses",
+        "description": "Enable payments with CLPD in local business points of sale."
+      },
+      "q1-3": {
+        "title": "E-commerce Integration Kit",
+        "description": "Start receiving payments in your e-commerce with CLPD and earn immediate interest rewards."
+      },
+      "q2": "Q2 * 2025",
+      "q2-1": {
+        "title": "Commercial Alliances",
+        "description": "Alliances with companies that accept stablecoin payments and local fintechs."
+      },
+      "q2-2": {
+        "title": "APIs For Merchants and Developers",
+        "description": "Infrastructure and documentation for institutional use, in stores and applications of the stablecoin."
+      },
+      "q3": "Q3 * 2025",
+      "q3-1": {
+        "title": "International Expansion",
+        "description": "Opening markets where the demand for a Chilean peso stablecoin can grow (for example, for remittances)."
+      },
+      "q3-2": {
+        "title": "Protocol Optimization",
+        "description": "Continuous improvements based on market feedback and regular security audits."
+      },
+      "q3-3": {
+        "title": "Decentralized Governance",
+        "description": "Adoption of decentralized governance systems for the evolution of the stablecoin and compliance with regulations as they are updated."
+      },
+      "q4": "Q4 * 2024",
+      "q4-1": {
+        "title": "Adoption Programs and Liquidity",
+        "description": "Incentives for users to adopt the stablecoin, such as staking, rewards, or liquidity promotions on decentralized exchanges."
+      },
+      "q4-2": {
+        "title": "Integration with Coinbase Smart Wallet",
+        "description": ""
+      },
+      "q4-3": {
+        "title": "Launch of liquidity pool on Aerodrome",
+        "description": ""
+      }
+    }
+  },
+  "footer": {
+    "copyright": "A product of A0x © 2024",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfUse": "Terms of Use"
+  },
+  "reserve": {
+    "secure": "Transparency and Stability",
+    "secure1": "The CLPD can always be exchanged 1:1 for Chilean pesos. Always.",
+    "secure2": "Each issued token has an exact equivalent in Chilean pesos deposited in a Chilean bank as proof of reserve.",
+    "composition": "Reserve Composition",
+    "realTime": "REAL-TIME BALANCES",
+    "balances": "Balances",
+    "inCirculation": "In Circulation",
+    "inReserve": "In Reserve",
+    "CLPDCirculation": "CLPD in circulation",
+    "bankReserve": "Cash in the reserve bank",
+    "history": "Reserve History",
+    "faq": {
+      "title1": "How is CLPD guaranteed to be fully backed and exchangeable for traditional Chilean pesos?",
+      "content1": "CLPD is a 100% backed Chilean peso stablecoin (not converted into any other asset than traditional CLP) and is exchangeable 1:1 for Chilean pesos fiat. All Chilean pesos fiat are held in a Chilean national bank account that is monitored 24/7 by independent oracles provided by Chainlink Functions technology.",
+      "title2": "How can I get CLPD and convert it to Chilean pesos fiat?",
+      "content2": "Individuals and common users, startups and small businesses can get CLPD through the website clpd.mistokens.com and soon in more national and international applications and exchanges. For exchanges, institutions, banks, wallets, institutional traders, large companies and financial institutions, they can contact the A0x developer team.",
+      "title3": "In which blockchain is CLPD available?",
+      "content3": "CLPD is available on the BASE blockchain, a layer 2 solution on Ethereum, compatible with EVM (Ethereum Virtual Machine), built on the Optimism superstack, with the security, stability and scalability necessary to obtain transactions at the lowest cost for all payment and financial applications of CLPD. Soon, CLPD will be enabled on other blockchains to further facilitate its use and adoption.",
+      "title4": "How is the parity between circulating CLPD and CLP fiat reserves maintained?",
+      "content4": "When a user deposits Chilean pesos from their bank account to the stablecoin account, the equivalent CLPD are created automatically in their digital wallet. There is no other mechanism for creating CLPD. At the same time, when CLPD are wanted to be exchanged for Chilean pesos fiat in the user's bank account, these CLPD are 'burned' and removed from circulation. Through this mechanism, a parity of 1:1 is maintained at all times and automatically.",
+      "title5": "Is CLPD a cryptocurrency?",
+      "content5": "CLPD is a 100% backed stablecoin, which is a type of digital peso, or Chilean peso digital. Unlike other cryptocurrencies that fluctuate in price, CLPD is designed to maintain the market relationship with the US dollar, and have an equivalent in traditional Chilean pesos respaldado 1:1 in a fully liquid Chilean national bank account. CLPD is an equivalent to the traditional Chilean peso that benefits from the speed and security of blockchain technology.",
+      "title6": "How is CLPD different from a CBDC (digital currency issued by the central bank)?",
+      "content6": "CLPD is issued by A0x, a private Chilean company at the intersection of blockchain and fintech. In contrast, a CBDC would be issued by the government or the central bank. While the Chilean CBDC is still in the study and exploration phase, without a determination as to whether it will be created at some point or not, CLPD is already available and will be useful for payments between people, businesses, international transfers, access to yields in DeFi, savings and investment vehicles, and other applications in a safe, fast and low-cost manner. A0x has developed this technology based on open source practices and taking into account the use of stablecoins in the world."
+    },
+    "reserve": "Money in the bank of reserve"
+  },
+  "deposit": {
+    "deposit": "Create a deposit order",
+    "depositSubtitle": "Deposit using",
+    "depositStep1": "Deposit to the following account",
+    "bankInfo": {
+      "info": "Bank account information",
+      "bank": "Bank",
+      "accountNumber": "Account Number",
+      "rut": "RUT",
+      "owner": "Account Holder",
+      "email": "Email",
+      "type": "Account Type"
+    },
+    "transferBank": "Bank Transfer",
+    "send": "Send",
+    "receive": "Receive",
+    "transferStatus": "Transfer Status",
+    "initiated": "Initiated",
+    "processing": "Processing",
+    "completed": "Completed",
+    "createOrder": "Create Deposit Order",
+    "sendOrder": "Send",
+    "proof": "Upload Proof",
+    "upload": "Select PDF or Image",
+    "amount": "Amount to Deposit",
+    "amountPlaceholder": "100.000",
+    "done": "Done",
+    "step3": "Your order is waiting review...",
+    "step3Description": "This page will update automatically when it's ready, and you will receive an email.",
+    "step3Minted": "Deposit approved!",
+    "step3MintedDescription": "Your funds have been loaded successfully.",
+    "step3MintedBalance": "Your balance",
+    "ready": "Ready",
+    "yourEmail": "Your email",
+    "back": "Back",
+    "willBeSent": "Will be sent"
+  },
+  "withdraw": {
+    "withdraw": "Withdraw CLP",
+    "amount": "Amount to Withdraw",
+    "amountPlaceholder": "100.000",
+    "bankInfo": {
+      "bankName": "Bank",
+      "accountType": "Account Type",
+      "name": "Name",
+      "accountNumber": "Account Number",
+      "rut": "RUT",
+      "email": "Email",
+      "bankNamePlaceholder": "Banco Santander",
+      "accountTypePlaceholder": "Checking",
+      "accountNumberPlaceholder": "1234567890",
+      "rutPlaceholder": "12.345.678-9",
+      "namePlaceholder": "Jhon Doe",
+      "emailPlaceholder": "jhon@doe.com"
+    },
+    "createWithdrawOrder": "Create a withdraw order",
+    "wallet": "Wallet",
+    "baseAddress": "Base Address",
+    "transferBank": "Bank Transfer",
+    "bankChile": "Chilean Bank",
+    "bankAccount": "Bank Account",
+    "accountHolder": "Account Holder",
+    "bankAccountPlaceholder": "Banco Estado",
+    "accountHolderPlaceholder": "Jhon Doe",
+    "withdrawStatus": "Withdraw Status",
+    "initiated": "Initiated",
+    "processing": "Processing",
+    "completed": "Completed",
+    "ownershipCheck": "Declare that I am the account holder",
+    "complianceCheck": "Compliance",
+    "createWithdraw": "Order Withdraw",
+    "receive": "Receive",
+    "redeem": "Redeem",
+    "submit": "Submit",
+    "redeemStep1": "Enter account to transfer",
+    "transferStep1": "Enter address to send",
+    "step3": "Your order is waiting review...",
+    "step3Description": "This page will update automatically when it's ready, and you will receive an email.",
+    "step3Burned": "Withdraw approved!",
+    "step3BurnedDescription": "Your funds have been withdrawn successfully.",
+    "step3BurnedBalance": "Your balance",
+    "availableBalance": "Available balance",
+    "max": "Max",
+    "ready": "Ready",
+    "yourEmail": "Your email",
+    "willBeSent": "Will be sent",
+    "networkShouldBe": "The destination wallet must support the BASE network.",
+    "baseAddressPlaceholder": "0x123...456",
+    "transferStep3": "Transfer completed successfully",
+    "errorFields": {
+      "amount": "The amount is greater than the available balance",
+      "bankId": "The bank is required",
+      "accountType": "The account type is required",
+      "rut": "The RUT is required",
+      "accountNumber": "The account number is required",
+      "name": "The name is required",
+      "email": "The email is required",
+      "ownershipCheck": "You must declare that you are the account holder"
+    }
+  },
+  "invest": {
+    "invest": "Invest",
+    "investButton": "Invest",
+    "investBalance": "Your balance",
+    "invested": "Your investment",
+    "transfer": "Transfers",
+    "amountPlaceholder": "100.000",
+    "pool": "Liquidity Pool",
+    "fees": "Earn fees by transactions in the network",
+    "increase": "Grow the liquidity of CLPD for future users.",
+    "benefits": "Other benefit.*",
+    "investWaitingTitle": "Transaction in progress...",
+    "investWaitingDescription": "This page will update automatically when it's ready, and you will receive an email.",
+    "investSuccessTitle": "¡Investment approved!",
+    "investSuccessDescription": "Your gains by fees will be automatically reflected in your balance.",
+    "ready": "Ready",
+    "yourEmail": "Your email",
+    "changeTo": "Change to",
+    "max": "Max",
+    "yourFees": "Your fees earned"
+  },
+  "change": {
+    "change": "Change between",
+    "and": "and",
+    "from": "From",
+    "to": "To",
+    "send": "Send",
+    "receive": "Receive",
+    "amountPlaceholder": "100.000",
+    "max": "Max",
+    "changeButton": "Change",
+    "changeBalance": "Your balance",
+    "changeWaitingTitle": "Transaction in progress...",
+    "changeWaitingDescription": "This page will update automatically when it's ready, and you will receive an email.",
+    "changeSuccessTitle": "¡Change approved!",
+    "changeSuccessDescription": "Your funds have been changed successfully.",
+    "changeSuccessBalance": "Your balance",
+    "yourBalance": "Your balance",
+    "ready": "Ready",
+    "yourEmail": "Your email",
+    "willBeSent": "Will be sent"
+  },
+  "bridge": {
+    "createBridgeOrderBase": "Send to Base",
+    "createBridgeOrderOasis": "Send to Oasis",
+    "availableBalance": "Available balance in",
+    "send": "Send",
+    "amountPlaceholder": "100",
+    "getCLPDTesnet": "Get CLPD Testnet",
+    "max": "Max",
+    "errorFields": {
+      "amount": "The amount entered is invalid"
+    },
+    "receive": "Receive",
+    "bridgeSuccess": "Bridge success",
+    "stepSuccessBridgeDescription": "The transfer has been completed successfully.",
+    "stepPendingBridgeDescription": "The transfer is in progress.",
+    "createbridge": "Create bridge",
+    "submit": "Submit"
+  }
+}

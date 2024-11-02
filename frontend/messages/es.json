@@ -1,0 +1,289 @@
+{
+  "navbar": {
+    "login": "Iniciar sesión",
+    "stableCoin": "Stable Coin",
+    "earnWithPesos": "Gana con Pesos",
+    "aboutUs": "Sobre Nosotros",
+    "reserve": "Reserva",
+    "deposit": "Depositar",
+    "withdraw": "Retirar",
+    "invest": "Invertir",
+    "change": "Cambiar",
+    "logout": "Cerrar sesión",
+    "backToHome": "Volver a la página",
+    "bridge": "Puente"
+  },
+  "landing": {
+    "send": "Envías",
+    "enterApp": "Entrar a la App",
+    "receive": "Recibes",
+    "redeem": "Sacas",
+    "feeCLPD": "Comisiones en CLPD",
+    "save": "Ahorras",
+    "earn": {
+      "title": "Invierte",
+      "description": "Ahorra y gana intereses de manera automática con tus CLPD. Además obtén acceso directo a mercados internacionales de activos digitales y del mundo real para hacer crecer aún más tu inversión."
+    },
+    "deposit": {
+      "title": "Deposita",
+      "description": "La primera moneda estable completamente respaldada por pesos chilenos. Deposita pesos chilenos desde tu cuenta bancaria, obtén CLPD y desbloquea lo mejor del dinero digital."
+    },
+    "withdraw": {
+      "title": "Retira",
+      "description": "Cada CLPD está respaldado 100% por pesos chilenos en una cuenta bancaria segura. Puedes cambiarlos por pesos en tu cuenta de banco 24 horas al día, sin demora."
+    },
+    "features": {
+      "title": "El futuro del dinero digital, ahora",
+      "description1": "CLPD es la primera y única stablecoin del peso chileno con pruebas de reserva garantizada y verificable. Siempre existirá 1 CLP en reservas por cada CLPD en circulación.",
+      "description2": "Utilizando CLPD accedes a transferencias y pagos instantáneos, nacionales e internacionales, seguro y de bajo costo. Además es programable a través de smart contracts, lo que abre infinitas posibilidades para su uso y distribución."
+    },
+    "automate": {
+      "title": "Automatiza",
+      "description": "El CLPD es fácilmente programable para ser integrado en tus flujos de pago, contratos automatizados, distribuciones de dividendos y otros."
+    },
+    "roadmap": {
+      "title": "Roadmap",
+      "q1": "Q1 * 2025",
+      "q1-1": {
+        "title": "Integraciones",
+        "description": "con wallets, exchanges y aplicaciones DeFi para facilitar el uso de la stablecoin en el ecosistema onchain."
+      },
+      "q1-2": {
+        "title": "Negocios locales",
+        "description": "Habilitación de pago con CLPD en puntos de venta de negocios locales."
+      },
+      "q1-3": {
+        "title": "Kit de integración para e-commerce",
+        "description": "Comienza a recibir pagos en tu e-commerce con CLPD y gana recompensas inmediatas en interés."
+      },
+      "q2": "Q2 * 2025",
+      "q2-1": {
+        "title": "Alianzas Comerciales",
+        "description": "Alianzas con empresas que acepten pagos en stablecoins y fintechs locales."
+      },
+      "q2-2": {
+        "title": "APIs Para Comercios y Desarrolladores",
+        "description": "Infraestructura y documentación para el uso institucional, en comercios y aplicaciones de la moneda estable."
+      },
+      "q3": "Q3 * 2025",
+      "q3-1": {
+        "title": "Expansión Internacional",
+        "description": "Apertura de mercados donde la demanda por una stablecoin del peso chileno pueda crecer (por ejemplo, para remesas)."
+      },
+      "q3-2": {
+        "title": "Optimización del Protocolo",
+        "description": "Mejoras continuas basadas en la retroalimentación del mercado y auditorías de seguridad regulares."
+      },
+      "q3-3": {
+        "title": "Cumplimiento Normativo y Gobernanza Descentralizada",
+        "description": "Adopción de sistemas de gobernanza descentralizados para la evolución de la stablecoin y cumplimiento de las normativas a medida que se actualicen."
+      },
+      "q4": "Q4 * 2024",
+      "q4-1": {
+        "title": "Programas de Adopción y Liquidez",
+        "description": " incentivos para que los usuarios adopten la stablecoin, como staking, recompensas, o promociones de liquidez en exchanges descentralizados."
+      },
+      "q4-2": {
+        "title": "Integración con la Smart Wallet de Coinbase",
+        "description": ""
+      },
+      "q4-3": {
+        "title": "Lanzamiento de piscina de liquidez en Aerodrome",
+        "description": ""
+      }
+    }
+  },
+  "footer": {
+    "copyright": "Un producto de A0x © 2024",
+    "privacyPolicy": "Política de Privacidad",
+    "termsOfUse": "Términos y Condiciones"
+  },
+  "reserve": {
+    "secure": "Transparencia y Estabilidad",
+    "secure1": "El CLPD siempre se puede intercambiar 1 a 1 por pesos chilenos. Siempre.",
+    "secure2": "Cada token emitido tiene un equivalente exacto en pesos chilenos depositados en una cuenta bancaria segura en Chile como prueba de reserva.",
+    "composition": "Composición de Reserva",
+    "realTime": "SALDOS EN TIEMPO REAL",
+    "balances": "Saldos",
+    "inCirculation": "En circulación",
+    "inReserve": "En reserva",
+    "CLPDCirculation": "CLPD en circulación",
+    "bankReserve": "Efectivo en el banco de reserva",
+    "history": "Histórico de la reserva",
+    "faq": {
+      "title1": "¿Cómo se garantiza que CLPD está completamente respaldado y es intercambiable por pesos chilenos tradicionales?",
+      "content1": "CLPD es un peso chileno digital respaldado 100% por dinero líquido (no está convertido en ningún tipo de activo más que CLP tradicional) y es intercambiable 1:1 por pesos chilenos fiat. Todos los pesos chilenos fiat se resguardan en una cuenta bancaria nacional que es monitoreada 24/7 por oráculos independientes proporcionados por la tecnología de Chainlink Functions.",
+      "title2": "¿Cómo puedo obtener CLPD y convertirlo a pesos chilenos fiat?",
+      "content2": "Individuos y usuarios comunes, startups y pequeños negocios pueden obtener CLPD a través del sitio web clpd.mistokens.com y pronto en más aplicaciones y exchanges nacionales e internacionales. Para exchanges, instituciones, bancos, wallets, traders institucionales, grandes empresas e instituciones financieras, pueden ponerse en contacto con el equipo de desarrollador A0x.",
+      "title3": "¿En qué blockchain está disponible CLPD?",
+      "content3": "CLPD está disponible en la red blockchain BASE, una solución de capa 2 en Ethereum, compatible con EVM (Ethereum Virtual Machine), construida sobre el superstack de Optimism, con la seguridad, estabilidad y escalabilidad necesaria para obtener transacciones de bajísimo costo para todas las aplicaciones de pago y financieras de CLPD. Pronto se habilitará el CLPD en otras blockchains para facilitar aún más su uso y adopción.",
+      "title4": "¿Cómo se mantiene la paridad entre el CLPD circulante y las reservas de CLP fiat?",
+      "content4": "Cuando un usuario deposita pesos chilenos desde su cuenta bancaria a la de la moneda estable, se crean los CLPD equivalentes en su billetera digital de manera automatizada. No existe otro mecanismo de creación de CLPD. Al mismo tiempo, cuando se quieren intercambiar CLPD por pesos chilenos fiat en la cuenta bancaria del usuario, dichos CLPD son “quemados” y sacados de circulación. Mediante este mecanismo se mantiene una paridad 1:1 en todo momento y de manera automática.",
+      "title5": "¿El CLPD es una criptomoneda?",
+      "content5": "El CLPD es una moneda estable 100% respaldada, que es un tipo de criptomoneda, o peso chileno digital. A diferencia de otras criptomonedas que fluctúan en su precio, el CLPD está diseñado para mantener la relación de mercado con el dólar norteamericano USD, y tener un equivalente en pesos chilenos tradicionales respaldado 1:1 en una cuenta bancaria nacional 100% líquida. El CLPD es un equivalente al peso chileno tradicional que se beneficia de la velocidad y seguridad de la tecnología blockchain.",
+      "title6": "¿Cómo es diferente el CLPD a una CBDC (moneda digital emitida por el banco central)?",
+      "content6": "El CLPD es emitido por A0x, una empresa privada chilena en la intersección de blockchain y fintech. En cambio, una CBDC sería emitida por el gobierno o el banco central. Mientras la CBDC chilena se encuentra en etapa de estudio y exploración, sin una determinación al respecto de si se creará en algún momento o no, el CLPD ya se encuentra disponible y será útil para pagos entre personas, comercios, transferencias internacionales, acceder a rendimientos en DeFi, vehículos de ahorro e inversión, y otras aplicaciones de manera segura, rápida y de bajísimo costo. A0x ha desarrollado esta tecnología basandose en las prácticas de código abierto y tomando el conocimiento del uso de las stablecoins en el mundo."
+    },
+    "reserve": "Dinero en el banco de reserva"
+  },
+  "deposit": {
+    "deposit": "Crea una orden de depósito",
+    "depositSubtitle": "Deposita usando",
+    "depositStep1": "Deposita a la siguiente cuenta",
+    "bankInfo": {
+      "info": "Información de la cuenta bancaria",
+      "bank": "Banco",
+      "accountNumber": "Número de Cuenta",
+      "owner": "Titular",
+      "email": "Email",
+      "type": "Tipo de cuenta",
+      "rut": "RUT"
+    },
+    "transferBank": "Transferencia bancaria",
+    "send": "Envías",
+    "receive": "Recibes",
+    "transferStatus": "Estado de la transferencia",
+    "initiated": "Iniciada",
+    "processing": "En Proceso",
+    "completed": "Completada",
+    "createOrder": "Ordenar Depósito",
+    "sendOrder": "Enviar",
+    "proof": "Sube el comprobante",
+    "upload": "Selecciona PDF o Imagen",
+    "amount": "Monto a depositar",
+    "amountPlaceholder": "100.000",
+    "done": "Hecho",
+    "step3": "Tu orden está esperando revisión...",
+    "step3Description": "Esta página se actualizará automáticamente cuando esté lista, y recibirás un correo.",
+    "step3Minted": "¡Depósito aprobado!",
+    "step3MintedDescription": "Tus fondos han sido cargados con éxito.",
+    "step3MintedBalance": "Tu saldo",
+    "ready": "Listo",
+    "yourEmail": "Tu email",
+    "back": "Volver",
+    "willBeSent": "Se enviarán"
+  },
+  "withdraw": {
+    "withdraw": "Retirar CLP",
+    "amount": "Monto a retirar",
+    "amountPlaceholder": "100.000",
+    "bankInfo": {
+      "bankName": "Banco",
+      "accountType": "Tipo de cuenta",
+      "name": "Nombre",
+      "accountNumber": "Número de cuenta",
+      "rut": "RUT",
+      "email": "Email",
+      "bankNamePlaceholder": "Banco Santander",
+      "accountTypePlaceholder": "Cuenta vista",
+      "accountNumberPlaceholder": "1234567890",
+      "rutPlaceholder": "12.345.678-9",
+      "namePlaceholder": "Jhon Doe",
+      "emailPlaceholder": "jhon@doe.com"
+    },
+    "createWithdrawOrder": "Crear una orden de retiro",
+    "wallet": "Wallet",
+    "baseAddress": "Base Address",
+    "transferBank": "Transferencia bancaria",
+    "bankChile": "Banco Chile",
+    "bankAccount": "Cuenta bancaria",
+    "accountHolder": "Titular de la cuenta",
+    "bankAccountPlaceholder": "Banco Estado",
+    "accountHolderPlaceholder": "Jhon Doe",
+    "withdrawStatus": "Estado del Retiro",
+    "initiated": "Iniciado",
+    "processing": "En Proceso",
+    "completed": "Completado",
+    "ownershipCheck": "Declaro que soy el titular de la cuenta",
+    "complianceCheck": "Cumplimiento",
+    "createWithdraw": "Ordenar Retiro",
+    "submit": "Enviar",
+    "receive": "Recibes",
+    "redeem": "Retiras",
+    "redeemStep1": "Ingresa la cuenta a transferir",
+    "transferStep1": "Ingresa address a enviar",
+    "step3": "Tu orden está esperando revisión...",
+    "step3Description": "Esta página se actualizará automáticamente cuando esté lista, y recibirás un correo.",
+    "step3Burned": "¡Retiro aprobado!",
+    "step3BurnedDescription": "Tus fondos han sido retirados con éxito.",
+    "step3BurnedBalance": "Tu saldo",
+    "availableBalance": "Saldo disponible",
+    "max": "Max",
+    "ready": "Listo",
+    "yourEmail": "Tu email",
+    "willBeSent": "Se enviarán",
+    "networkShouldBe": "La wallet de destino debe soportar la red BASE.",
+    "baseAddressPlaceholder": "0x123...456",
+    "transferStep3": "Transferencia exitosa",
+    "errorFields": {
+      "amount": "El monto es mayor al saldo disponible",
+      "bankId": "El banco es requerido",
+      "rut": "El RUT es requerido",
+      "accountType": "El tipo de cuenta es requerido",
+      "accountNumber": "El número de cuenta es requerido",
+      "name": "El nombre es requerido",
+      "email": "El email es requerido",
+      "ownershipCheck": "Debes declarar que eres el titular de la cuenta"
+    }
+  },
+  "invest": {
+    "invest": "Invierte",
+    "investButton": "Invertir",
+    "investBalance": "Tu saldo",
+    "invested": "Tu inversión",
+    "transfer": "Transfieres",
+    "amountPlaceholder": "100.000",
+    "pool": "Piscina de Liquidez",
+    "fees": "Gana fees por transacciones en la red",
+    "increase": "Haz crecer la liquidez de los CLPD para futuros usuarios.",
+    "benefits": "Otro beneficio.*",
+    "investWaitingTitle": "Transacción en curso...",
+    "investWaitingDescription": "Esta página se actualizará automáticamente cuando esté lista, y recibirás un correo.",
+    "investSuccessTitle": "¡Inversión aprobada!",
+    "investSuccessDescription": "Tus ganancias por fees se reflejarán automáticamente en tu saldo.",
+    "ready": "Listo",
+    "yourEmail": "Tu email",
+    "changeTo": "Cambiar a",
+    "max": "Max",
+    "yourFees": "Tus fees ganados"
+  },
+  "change": {
+    "change": "Cambia entre",
+    "and": "y",
+    "from": "Desde",
+    "to": "A",
+    "send": "Enviar",
+    "receive": "Recibir",
+    "amountPlaceholder": "100.000",
+    "max": "Max",
+    "changeButton": "Cambiar",
+    "changeBalance": "Tu saldo",
+    "changeWaitingTitle": "Transacción en curso...",
+    "changeWaitingDescription": "Esta página se actualizará automáticamente cuando esté lista, y recibirás un correo.",
+    "changeSuccessTitle": "¡Cambio aprobado!",
+    "changeSuccessDescription": "Tus fondos han sido cambiados con éxito.",
+    "changeSuccessBalance": "Tu saldo",
+    "ready": "Listo",
+    "yourEmail": "Tu email",
+    "yourBalance": "Tu saldo",
+    "willBeSent": "Se enviarán"
+  },
+  "bridge": {
+    "createBridgeOrderBase": "Enviar a Base",
+    "createBridgeOrderOasis": "Enviar a Oasis",
+    "availableBalance": "Saldo disponible en",
+    "send": "Enviar",
+    "amountPlaceholder": "100",
+    "getCLPDTesnet": "Obtener CLPD Testnet",
+    "max": "Máximo",
+    "errorFields": {
+      "amount": "La cantidad ingresada es inválida"
+    },
+    "receive": "Recibir",
+    "bridgeSuccess": "Éxito en el envío",
+    "stepSuccessBridgeDescription": "La transferencia se ha completado con éxito.",
+    "stepPendingBridgeDescription": "La transferencia está en proceso.",
+    "createbridge": "Crear envío",
+    "submit": "Enviar"
+  }
+}
