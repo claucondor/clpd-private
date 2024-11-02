@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  @font-face {
+    font-family: "Helvetica";
+    font-weight: 500;
+    font-style: normal;
+    src: url("/fonts/Helvetica.ttf") format("ttf");
+  }
+
+  @font-face {
+    font-family: "Helvetica";
+    font-weight: 700;
+    font-style: normal;
+    src: url("/fonts/Helvetica-Bold.ttf") format("ttf");
+  }
+
+  @font-face {
+    font-family: "Beauford";
+    font-weight: 500;
+    font-style: normal;
+    src: url("/fonts/Beauford-Regular.otf") format("otf");
+  }
+
+  @font-face {
+    font-family: "Beauford";
+    font-weight: 700;
+    font-style: normal;
+    src: url("/fonts/Beauford-Bold.otf") format("otf");
+  }
+}
