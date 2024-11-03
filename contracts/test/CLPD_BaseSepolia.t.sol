@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.25;
 
-import {Test, console} from "forge-std/Test.sol";
+import {Test} from "../lib/forge-std/src/Test.sol";
 import {CLPD} from "../src/CLPD_BaseSepolia.sol";
 
 /**
  * To run this contract, copy and paste this command in the terminal:
  * forge test -vvvvv --match-path test/CLPD_BaseSepolia.t.sol --fork-url https://sepolia.base.org/
- * 
+ *  
  * @dev Contract deployed on Base Sepolia
- * https://sepolia.basescan.org/token/0xec4ec868b9879C222877bd42Eaa0920705eE0eE3
+ * https://sepolia.basescan.org/address/0x3CDd0830D873eAB083653bb4aCa8d8D8023B7BF3
 */
 
 contract CLPDTest is Test {
@@ -19,16 +19,20 @@ contract CLPDTest is Test {
     address public account2 = 0x9F693ea18DA08824E729d5efc343Dd78254a9302; // No Agent and no Owner of the real contract
 
     function setUp() public {
-        clpd = CLPD(0xec4ec868b9879C222877bd42Eaa0920705eE0eE3); 
-    }
-
-    function test_chainlink() public view {
-        assertEq(clpd.getVaultBalance(), 201100);
-        console.log("Vault balance:", clpd.getVaultBalance());
+        clpd = CLPD(0x3CDd0830D873eAB083653bb4aCa8d8D8023B7BF3);
+        
+        // Transfer 10,000 tokens (with 18 decimals) to account1 and account2
+        uint256 transferAmount = 10_000 * 10**18; // 10,000 tokens
+        
+        // Make owner send tokens to account1 and account2
+        vm.startPrank(owner);
+        clpd.transfer(account1, transferAmount);
+        clpd.transfer(account2, transferAmount);
+        vm.stopPrank();
     }
 
     // ---------------------------------------------- AddAgent tests ----------------------------------------------   
-    function testAgentFunctionality() public {
+    function testAddAgent() public {
         // Make account1 an agent
         vm.prank(owner);
         clpd.addAgent(account1);
@@ -696,30 +700,8 @@ contract CLPDTest is Test {
         assertEq(clpd.balanceOf(clpd.receiver()), initialBalanceReceiver + transferAmount, "Receiver's balance should increase");
     }
 
-    // ---------------------------------------------- setReceiver tests ---------------------------------------------- 
-    function testSetReceiver() public {
-        // Make account2 an agent
-        vm.prank(owner);
-        clpd.addAgent(account2);
-        
-        // Verify that account2 is now an agent
-        assertTrue(clpd.agents(account2), "account2 should be an agent");
-        
-        address agent = account2;
-        address newReceiver = account1;
-
-        assertEq(clpd.receiver(), owner, "Receiver should be owner");
-
-        // Set new receivers
-        vm.prank(agent);
-        clpd.setReceiver(newReceiver);
-        
-        // Verify that the receivers have been updated
-        assertEq(clpd.receiver(), newReceiver, "New receiver should be set");
-    }
-
     // ---------------------------------------------- burn tests ---------------------------------------------- 
-    function failBurn() public {
+    function testFailBurn() public {
         address noAgent = account2;
         uint256 burnAmount = 1000 * 10**18;
 

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.25;
 
-import "forge-std/Script.sol";
+import "lib/forge-std/src/Script.sol";
 import "../src/CLPD_BaseSepolia.sol";
 
 contract DeployACLP is Script {
@@ -16,7 +16,7 @@ contract DeployACLP is Script {
         vm.startBroadcast(deployerPrivateKey);
 
         // Deploy the CLPD contract with updated constructor parameters
-        CLPD clpd = new CLPD(receiver);
+        CLPD clpd = new CLPD();
 
         // Log the deployed contract address
         console.log("CLPD contract deployed at:", address(clpd));
