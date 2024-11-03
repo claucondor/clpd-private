@@ -4,10 +4,11 @@ pragma solidity ^0.8.19;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+
 /**
  * @dev Contract deployed on Base Sepolia
  * @notice You can view the deployed contract at:
- * https://sepolia.basescan.org/address/0x3CDd0830D873eAB083653bb4aCa8d8D8023B7BF3
+ * https://sepolia.basescan.org/address/0x23bbF7198Db6FCC09D0dee02678b7d60176facC6
 */
 
 // Main contract for CLPD that inherits from ERC20 and Ownable
@@ -142,7 +143,6 @@ contract CLPD is ERC20, Ownable {
 
     // Internal function to handle both single and batch minting
     function mintTokens() internal {
-        uint256 balance = apiDataBank * 10 **18;
         // Handle batch minting
         if (pendingUsers.length > 0) {
             uint256 totalMintAmount = 0;
@@ -151,14 +151,14 @@ contract CLPD is ERC20, Ownable {
             }
 
             // Verify total supply matches expected balance
-            if (balance == (apiDataChains + totalMintAmount)) {
+            if (apiDataBank == (apiDataChains + totalMintAmount)) {
                 for (uint256 i = 0; i < pendingUsers.length; i++) {
                     _mint(pendingUsers[i], pendingAmounts[i]);  // Mint to each user
                     emit TokensMinted(msg.sender, pendingUsers[i], pendingAmounts[i]);  // Emit event
                 }
                 emit BatchMintCompleted(pendingUsers, pendingAmounts, totalMintAmount);  // Event of batch mint
             } else {
-                revert MintConditionNotMet(balance, totalSupply(), pendingMintAmount);
+                revert MintConditionNotMet(apiDataBank, totalSupply(), pendingMintAmount);
             }
 
             // Reset temporary variables
@@ -167,11 +167,11 @@ contract CLPD is ERC20, Ownable {
         }
         // Handle single mint
         else if (pendingMintAmount > 0) {
-            if (balance == (apiDataChains + pendingMintAmount)) {
+            if (apiDataBank == (apiDataChains + pendingMintAmount)) {
                 _mint(pendingUser, pendingMintAmount);  // Mint
                 emit TokensMinted(msg.sender, pendingUser, pendingMintAmount);  // Emit event
             } else {
-                revert MintConditionNotMet(balance, totalSupply(), pendingMintAmount);
+                revert MintConditionNotMet(apiDataBank, totalSupply(), pendingMintAmount);
             }
 
             // Reset variables
@@ -274,7 +274,7 @@ contract CLPD is ERC20, Ownable {
     }
 
     // Internal function to burn tokens from a specific user's account (only agents can call)
-    function burnFrom(address user, uint256 amount) internal onlyAgent {
+    function burnFrom(address user, uint256 amount) internal {
         _burn(user, amount);
         emit TokensBurned(user, amount);
     }
@@ -282,8 +282,8 @@ contract CLPD is ERC20, Ownable {
     // Bridge tokens to another chain by transferring to receiver and burning
     function bridgeCLPD(uint256 amount) external {
         require(balanceOf(msg.sender) >= amount, "Not enough tokens to bridge");
-        _transfer(msg.sender, receiver, amount);
-        burnFrom(receiver, amount);
+        _transfer(msg.sender, address(this), amount);
+        burnFrom(address(this), amount);
         emit TokensBridge(msg.sender, amount, receiver);
     }
 }
