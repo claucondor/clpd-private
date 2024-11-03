@@ -12,7 +12,7 @@ type RequestWithUser = Request & {
 export const AuthMiddleware = (userService: UserService) => {
   return async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
-    const pk = req.body.pK
+    const pk = req.body.pK;
 
     if (!authHeader) {
       return res.status(401).send({
@@ -20,13 +20,13 @@ export const AuthMiddleware = (userService: UserService) => {
       });
     }
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(" ")[1];
 
     try {
       const user = await userService.getUser({ token });
-      if(pk && user){
-        user.pK = pk
-        await userService.updateUserPk(token, pk)
+      if (pk && user) {
+        user.pK = pk;
+        await userService.updateUserPk(token, pk);
       }
       if (!user) {
         return res.status(401).send({

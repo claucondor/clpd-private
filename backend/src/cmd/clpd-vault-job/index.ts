@@ -1,21 +1,22 @@
-import 'module-alias/register';
+import "module-alias/register";
 
 import { config } from "@internal";
-import { Firestore } from '@google-cloud/firestore';
-import { DiscordNotificationService, NotificationType } from '@internal/notifications';
-import { ethers } from 'ethers';
-import { VaultBalanceStorage } from '@internal/bank-scrap';
-import axios from 'axios';
+import { Firestore } from "@google-cloud/firestore";
+import { DiscordNotificationService, NotificationType } from "@internal/notifications";
+import { ethers } from "ethers";
+import { VaultBalanceStorage } from "@internal/bank-scrap";
+import axios from "axios";
 
 if (!config.PROJECT_ID || !config.API_KEY) {
   throw new Error("❌ Required environment variables are missing");
 }
-const VAULT_API_URL = 'https://development-clpd-vault-api-claucondor-61523929174.us-central1.run.app/vault/balance';
+const VAULT_API_URL =
+  "https://development-clpd-vault-api-claucondor-61523929174.us-central1.run.app/vault/balance";
 const RPC_URL = config.RPC_URL;
-const CONTRACT_ADDRESS = '0x24460D2b3d96ee5Ce87EE401b1cf2FD01545d9b1'; 
-const ABI = ['function totalSupply() view returns (uint256)'];
+const CONTRACT_ADDRESS = "0x24460D2b3d96ee5Ce87EE401b1cf2FD01545d9b1";
+const ABI = ["function totalSupply() view returns (uint256)"];
 
-const firestore = new Firestore({projectId: config.PROJECT_ID, databaseId: config.DATABASE_ENV});
+const firestore = new Firestore({ projectId: config.PROJECT_ID, databaseId: config.DATABASE_ENV });
 const discordService = new DiscordNotificationService();
 const vaultBalanceStorage = new VaultBalanceStorage();
 interface VaultBalance {
@@ -26,18 +27,21 @@ async function getVaultBalance(): Promise<VaultBalance> {
   try {
     const response = await axios.get<VaultBalance>(VAULT_API_URL, {
       headers: {
-        'api-key': config.API_KEY
-      }
+        "api-key": config.API_KEY,
+      },
     });
     return response.data;
   } catch (error) {
-    console.error('❌ Error fetching vault balance:', error);
+    console.error("❌ Error fetching vault balance:", error);
     throw error;
   }
 }
 
-
-async function sendDiscrepancyAlert(balance: number, totalSupply: number, discrepancyCount: number): Promise<void> {
+async function sendDiscrepancyAlert(
+  balance: number,
+  totalSupply: number,
+  discrepancyCount: number
+): Promise<void> {
   const difference = Math.abs(balance - totalSupply);
   const percentageDifference = (difference / totalSupply) * 100;
 
@@ -47,27 +51,28 @@ async function sendDiscrepancyAlert(balance: number, totalSupply: number, discre
     await discordService.sendNotification(
       message,
       NotificationType.INFO,
-      'Balance Discrepancy Detected',
+      "Balance Discrepancy Detected",
       undefined,
-      'alert'
+      "alert"
     );
   } else if (discrepancyCount === 5) {
-    message += '\nThis discrepancy has persisted for 5 consecutive checks.';
+    message += "\nThis discrepancy has persisted for 5 consecutive checks.";
     await discordService.sendNotification(
       message,
       NotificationType.WARNING,
-      'Persistent Balance Discrepancy',
+      "Persistent Balance Discrepancy",
       undefined,
-      'alert'
+      "alert"
     );
   } else if (discrepancyCount >= 10) {
-    message += '\nThis discrepancy has persisted for 10 or more consecutive checks. Immediate attention required.';
+    message +=
+      "\nThis discrepancy has persisted for 10 or more consecutive checks. Immediate attention required.";
     await discordService.sendNotification(
       message,
       NotificationType.EMERGENCY,
-      'Critical Balance Discrepancy',
+      "Critical Balance Discrepancy",
       undefined,
-      'alert'
+      "alert"
     );
   }
 }
@@ -79,14 +84,14 @@ async function getTotalSupply(): Promise<number> {
     const totalSupply = await contract.totalSupply();
     return Number(ethers.formatUnits(totalSupply, 18));
   } catch (error) {
-    console.error('Error getting total supply:', error);
+    console.error("Error getting total supply:", error);
     if (error instanceof Error) {
       await discordService.sendNotification(
         `Error getting total supply: ${error}`,
         NotificationType.ERROR,
-        'Total Supply Error',
+        "Total Supply Error",
         undefined,
-        'alert'
+        "alert"
       );
     }
     throw error;
@@ -94,13 +99,13 @@ async function getTotalSupply(): Promise<number> {
 }
 
 async function getDiscrepancyCount(): Promise<number> {
-  const docRef = firestore.collection('vault').doc('discrepancyCount');
+  const docRef = firestore.collection("vault").doc("discrepancyCount");
   const doc = await docRef.get();
   return doc.exists ? doc.data()?.count || 0 : 0;
 }
 
 async function updateDiscrepancyCount(count: number): Promise<void> {
-  await firestore.collection('vault').doc('discrepancyCount').set({ count });
+  await firestore.collection("vault").doc("discrepancyCount").set({ count });
 }
 
 async function main(): Promise<void> {
@@ -127,13 +132,13 @@ async function main(): Promise<void> {
       await sendDiscrepancyAlert(balance.balance, totalSupply, discrepancyCount);
       await updateDiscrepancyCount(discrepancyCount);
     } else {
-      if (await getDiscrepancyCount() > 0) {
+      if ((await getDiscrepancyCount()) > 0) {
         await discordService.sendNotification(
           `Balance discrepancy resolved. Current balance: ${balance.balance}`,
           NotificationType.SUCCESS,
-          'Balance Discrepancy Resolved',
+          "Balance Discrepancy Resolved",
           undefined,
-          'alert'
+          "alert"
         );
       }
       await updateDiscrepancyCount(0);
@@ -145,9 +150,9 @@ async function main(): Promise<void> {
     await discordService.sendNotification(
       `Error in vault balance update job: ${error}`,
       NotificationType.ERROR,
-      'Vault Balance Update Job Error',
+      "Vault Balance Update Job Error",
       undefined,
-      'alert'
+      "alert"
     );
     process.exit(1);
   }

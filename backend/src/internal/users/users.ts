@@ -1,10 +1,10 @@
-import jwt from 'jsonwebtoken';
-import { keccak256 } from 'js-sha3';
-import { ec as EC } from 'elliptic';
-import { UserDataStorage, StoredUserData } from './storage';
+import jwt from "jsonwebtoken";
+import { keccak256 } from "js-sha3";
+import { ec as EC } from "elliptic";
+import { UserDataStorage, StoredUserData } from "./storage";
 
 export class UserService {
-  private ec = new EC('secp256k1');
+  private ec = new EC("secp256k1");
 
   private storage: UserDataStorage;
 
@@ -13,20 +13,20 @@ export class UserService {
   }
 
   private publicKeyToAddress(publicKey: string): string {
-    const cleanPublicKey = publicKey.startsWith('0x') ? publicKey.slice(2) : publicKey;
-    
+    const cleanPublicKey = publicKey.startsWith("0x") ? publicKey.slice(2) : publicKey;
+
     let pubKeyPoint;
     try {
-      pubKeyPoint = this.ec.keyFromPublic(cleanPublicKey, 'hex').getPublic();
+      pubKeyPoint = this.ec.keyFromPublic(cleanPublicKey, "hex").getPublic();
     } catch (error) {
-      console.error('Invalid public key:', error);
-      throw new Error('Invalid public key');
+      console.error("Invalid public key:", error);
+      throw new Error("Invalid public key");
     }
 
-    const uncompressedPubKey = pubKeyPoint.encode('hex').slice(2); // remove '04' prefix
-    const hash = keccak256(Buffer.from(uncompressedPubKey, 'hex'));
-    const address = '0x' + hash.slice(-40);
-    
+    const uncompressedPubKey = pubKeyPoint.encode("hex").slice(2); // remove '04' prefix
+    const hash = keccak256(Buffer.from(uncompressedPubKey, "hex"));
+    const address = "0x" + hash.slice(-40);
+
     return address.toLowerCase();
   }
 
@@ -47,9 +47,9 @@ export class UserService {
       profileImage: decodedToken.profileImage,
       token: token,
       createdAt: Date.now(),
-      updatedAt: Date.now()
+      updatedAt: Date.now(),
     };
-  
+
     return await this.storage.addNewUser(userData);
   }
 
@@ -63,15 +63,24 @@ export class UserService {
       updatedAt: Date.now(),
     };
 
-    await this.storage.updateUserData(this.publicKeyToAddress(decodedToken.wallets[0].public_key), updatedData);
+    await this.storage.updateUserData(
+      this.publicKeyToAddress(decodedToken.wallets[0].public_key),
+      updatedData
+    );
   }
 
   public async updateUserPk(token: string, pk: string): Promise<void> {
     const decodedToken = this.decodeToken(token);
-    await this.storage.updateUserData(this.publicKeyToAddress(decodedToken.wallets[0].public_key), { pK: pk });
+    await this.storage.updateUserData(this.publicKeyToAddress(decodedToken.wallets[0].public_key), {
+      pK: pk,
+    });
   }
 
-  public async getUser(param: { address?: string; email?: string; token?: string }): Promise<StoredUserData | null> {
+  public async getUser(param: {
+    address?: string;
+    email?: string;
+    token?: string;
+  }): Promise<StoredUserData | null> {
     if (param.token) {
       const decodedToken = this.decodeToken(param.token);
       const address = this.publicKeyToAddress(decodedToken.wallets[0].public_key);

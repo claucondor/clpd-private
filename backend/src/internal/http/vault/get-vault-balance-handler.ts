@@ -210,7 +210,7 @@ async function attemptScraping(ctx: VaultContext): Promise<number | null> {
   );
   return null;
 }
- 
+
 function handleError(error: unknown, res: Response) {
   if (error instanceof Error) {
     console.error(`❌ CRITICAL ERROR: ${error.message}`);

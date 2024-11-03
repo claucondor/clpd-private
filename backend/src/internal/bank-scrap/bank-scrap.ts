@@ -11,7 +11,7 @@ export class SantanderClScraper {
     let browser;
     try {
       browser = await puppeteer.launch({
-        args: process.env.PUPPETEER_ARGS?.split(',') || [
+        args: process.env.PUPPETEER_ARGS?.split(",") || [
           "--no-sandbox",
           "--disable-setuid-sandbox",
           "--disable-dev-shm-usage",
@@ -21,7 +21,7 @@ export class SantanderClScraper {
           "--ignore-certificate-errors-spki-list",
           "--incognito",
         ],
-        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium',
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/chromium",
         ignoreDefaultArgs: ["--disable-extensions"],
         headless: true,
       });
@@ -29,7 +29,9 @@ export class SantanderClScraper {
       const page = await browser.newPage();
 
       await page.goto("https://banco.santander.cl/personas").catch(() => {
-        throw new Error("Failed to load Santander homepage. Check internet connection or website availability.");
+        throw new Error(
+          "Failed to load Santander homepage. Check internet connection or website availability."
+        );
       });
       console.log("✅ Page loaded correctly");
 
@@ -74,7 +76,9 @@ export class SantanderClScraper {
       console.log("✅ Click performed on 'Ingresar' button");
 
       await page.waitForNavigation({ waitUntil: "networkidle0", timeout: 30000 }).catch(() => {
-        throw new Error("Navigation after login failed. Possible reasons: slow internet, website changes, or incorrect credentials.");
+        throw new Error(
+          "Navigation after login failed. Possible reasons: slow internet, website changes, or incorrect credentials."
+        );
       });
       console.log("✅ Page loaded after login");
 

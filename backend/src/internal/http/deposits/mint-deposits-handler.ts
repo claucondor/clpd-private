@@ -27,7 +27,7 @@ export function mintDepositsHandler(depositService: DepositService) {
     try {
       const validationResult = validateMintDepositsRequest(req);
 
-      if ('error' in validationResult) {
+      if ("error" in validationResult) {
         return res.status(400).json({ error: validationResult.error });
       }
 
@@ -39,7 +39,9 @@ export function mintDepositsHandler(depositService: DepositService) {
         return res.status(200).json({ message: "Deposit marked as minted successfully" });
       } else {
         await depositService.markMultipleDepositsAsMinted(deposits);
-        return res.status(200).json({ message: `${deposits.length} deposits marked as minted successfully` });
+        return res
+          .status(200)
+          .json({ message: `${deposits.length} deposits marked as minted successfully` });
       }
     } catch (error) {
       console.error("Error minting deposits:", error);

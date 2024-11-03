@@ -29,11 +29,7 @@ export class DepositService {
   private emailNotificationService: EmailNotificationService;
   public bucketName: string = "deposit-proofs";
 
-  constructor(
-    firestore: Firestore,
-    bucketStorage: Storage,
-    resendApiKey: string
-  ) {
+  constructor(firestore: Firestore, bucketStorage: Storage, resendApiKey: string) {
     this.storage = new DepositDataStorage(firestore);
     this.bucketStorage = bucketStorage;
     this.discordNotificationService = new DiscordNotificationService();
@@ -73,7 +69,7 @@ export class DepositService {
       NotificationType.INFO,
       "New Deposit",
       undefined,
-      'deposit'
+      "deposit"
     );
 
     await this.emailNotificationService.sendNotification(user.email, EmailType.NEW_DEPOSIT, {
@@ -171,7 +167,7 @@ export class DepositService {
       NotificationType.INFO,
       "New Burn Request",
       undefined,
-      'withdrawal'
+      "withdrawal"
     );
 
     await this.emailNotificationService.sendNotification(user.email, EmailType.NEW_BURN_REQUEST, {
@@ -194,7 +190,6 @@ export class DepositService {
     if (!burnRequest) {
       throw new Error(`Burn request with ID ${burnRequestId} not found`);
     }
-
     await this.storage.updateBurnRequestData(burnRequestId, {
       status: BurnStatus.BURNED,
       burnTransactionHash: transactionHash,
@@ -219,7 +214,7 @@ export class DepositService {
         NotificationType.ERROR,
         "Burn Request Rejected",
         undefined,
-        'withdrawal'
+        "withdrawal"
       );
 
       await this.emailNotificationService.sendNotification(
@@ -230,17 +225,16 @@ export class DepositService {
     }
     console.log(`❌ Burn request rejected: ID ${burnRequestId}`);
   }
-
   public async uploadBurnProof(
     burnRequestId: string,
     proofFile: Buffer,
     fileName: string
   ): Promise<void> {
     await this.ensureBucketExists();
-  
+
     const bucket = this.bucketStorage.bucket(this.bucketName);
     const fileExtension = path.extname(fileName).toLowerCase();
-  
+
     let pngBuffer: Buffer;
     if (fileExtension === ".pdf") {
       const options = {
@@ -251,16 +245,16 @@ export class DepositService {
         savePath: "/tmp",
         type: "GraphicsMagick",
       };
-  
+
       const storeAsImage = fromBuffer(proofFile, options);
-  
+
       try {
         const result = await storeAsImage(1);
-  
+
         if (!result.path) {
           throw new Error("Failed to convert PDF to image");
         }
-  
+
         pngBuffer = await fs.readFile(result.path);
       } catch (error) {
         console.error("Error converting PDF to PNG:", error);
@@ -269,22 +263,22 @@ export class DepositService {
     } else {
       pngBuffer = await sharp(proofFile).png().toBuffer();
     }
-  
+
     const pngFile = bucket.file(`burn-proofs/${burnRequestId}/proof.png`);
     await pngFile.save(pngBuffer, {
       metadata: {
         contentType: "image/png",
       },
     });
-  
+
     const publicUrl = `https://storage.googleapis.com/${this.bucketName}/burn-proofs/${burnRequestId}/proof.png`;
-  
+
     await this.storage.updateBurnRequestData(burnRequestId, {
       proofImageUrl: publicUrl,
       status: BurnStatus.BURNED,
       updatedAt: Date.now(),
     });
-  
+
     const burnRequest = await this.storage.getBurnRequest(burnRequestId);
     if (burnRequest) {
       await this.emailNotificationService.sendNotification(
@@ -302,7 +296,7 @@ export class DepositService {
         NotificationType.INFO,
         "New burn proof",
         publicUrl,
-        'withdrawal'
+        "withdrawal"
       );
     }
     console.log(
@@ -368,7 +362,7 @@ export class DepositService {
       NotificationType.INFO,
       "New Deposit Proof",
       publicUrl,
-      'deposit'
+      "deposit"
     );
 
     const approvalToken = await this.storage.generateApprovalToken(depositId);
@@ -379,7 +373,7 @@ export class DepositService {
       NotificationType.WARNING,
       "New Deposit Proof - Action Required",
       undefined,
-      'deposit'
+      "deposit"
     );
     console.log(`📤 Proof of deposit uploaded for ID ${depositId}`);
   }
@@ -448,7 +442,7 @@ export class DepositService {
         NotificationType.INFO,
         "Deposit Approved",
         undefined,
-        'deposit'
+        "deposit"
       );
 
       await this.emailNotificationService.sendNotification(
@@ -466,7 +460,6 @@ export class DepositService {
     if (!deposit) {
       throw new Error(`Deposit with ID ${depositId} not found`);
     }
-
     await this.storage.updateDepositData(depositId, {
       status: DepositStatus.ACCEPTED_MINTED,
       mintTransactionHash: transactionHash,
@@ -529,7 +522,7 @@ export class DepositService {
         NotificationType.ERROR,
         "Deposit Rejected",
         undefined,
-        'deposit'
+        "deposit"
       );
 
       await this.emailNotificationService.sendNotification(
@@ -597,7 +590,7 @@ export class DepositService {
         NotificationType.INFO,
         "New Approval Member",
         undefined,
-        'alert'
+        "alert"
       );
     } catch (error) {
       console.error("Error adding approval member:", error);

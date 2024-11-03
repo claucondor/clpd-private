@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@oasisprotocol/sapphire-contracts": "^0.2.11",
     "@uniswap/v3-periphery": "^1.4.4"
   }
 }
