@@ -8,7 +8,7 @@ import "../node_modules/@oasisprotocol/sapphire-contracts/contracts/Sapphire.sol
 /**
  * @dev Contract deployed on Sapphire Testnet
  * @notice You can view the deployed contract at:
- * https://explorer.oasis.io/testnet/sapphire/address/0xc087867B188B0321e660809CA3A29E00C3e0835A
+ * https://explorer.oasis.io/testnet/sapphire/address/0xE65d126b56b1BF3Dd1f31057ffC1dabD53465b6e
 */
 
 contract CLPD is ERC20P, Ownable {

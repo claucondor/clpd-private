@@ -107,12 +107,12 @@ forge test -vvvv --match-path test/CLPD_BaseSepolia.t.sol
 ## Networks and Deployments
 
 ### Sapphire Testnet
-- CLPD Token: [View on Explorer](https://explorer.oasis.io/testnet/sapphire/address/0xc087867B188B0321e660809CA3A29E00C3e0835A)
+- CLPD Token: [View on Explorer](https://explorer.oasis.io/testnet/sapphire/address/0xE65d126b56b1BF3Dd1f31057ffC1dabD53465b6e)
 - CLPD Token ROFL: [View on Explorer](https://explorer.oasis.io/testnet/sapphire/address/0xd28eb2D29964127D102cD0047A1fee319B328Bca)
 - Oracle ROFL: [View on Explorer](https://explorer.oasis.io/testnet/sapphire/address/0xEdDa5130fD503445AB7c4520DA7ef1b55Be0372A)
 
 ### Base Sepolia
-- CLPD Token: [View on Explorer](https://sepolia.basescan.org/address/0x3CDd0830D873eAB083653bb4aCa8d8D8023B7BF3)
+- CLPD Token: [View on Explorer](https://sepolia.basescan.org/address/0x23bbF7198Db6FCC09D0dee02678b7d60176facC6)
 
 ## Security Considerations
 

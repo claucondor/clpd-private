@@ -7,6 +7,9 @@ import {CLPD} from "../src/CLPD_SapphireTesnet.sol";
 /**
  * To run this contract, copy and paste this command in the terminal:
  * forge test -vvvv --match-path test/CLPD_SapphireTesnet.t.sol
+ * 
+ * You can view the deployed contract at:
+ * https://explorer.oasis.io/testnet/sapphire/address/0xE65d126b56b1BF3Dd1f31057ffC1dabD53465b6e
  */
 
 contract CLPDSapphireTest is Test {
