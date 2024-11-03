@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import {Test, console} from "forge-std/Test.sol";
+import {Test} from "../lib/forge-std/src/Test.sol";
 import {CLPD} from "../src/CLPD_SapphireTesnet.sol";
 
 /**
@@ -232,11 +232,9 @@ contract CLPDSapphireTest is Test {
             address decryptedTo,
             uint256 decryptedAmount,
             string memory action,
-            uint256 timestamp,
-            bool exists
+            uint256 timestamp
         ) = clpd.viewLastDecryptedData();
 
-        assertTrue(exists, "Decrypted data should exist");
         assertEq(decryptedFrom, user1, "From address should match");
         assertEq(decryptedTo, user2, "To address should match");
         assertEq(decryptedAmount, 500, "Amount should match");
@@ -246,10 +244,9 @@ contract CLPDSapphireTest is Test {
 
         // Regular auditor should only see authorized addresses
         vm.startPrank(regularAuditor);
-        (decryptedFrom, decryptedTo, decryptedAmount, action, timestamp, exists) = 
+        (decryptedFrom, decryptedTo, decryptedAmount, action, timestamp) = 
             clpd.viewLastDecryptedData();
         
-        assertTrue(exists, "Decrypted data should exist for authorized address");
         assertEq(decryptedFrom, user1, "Should see data for authorized address");
         vm.stopPrank();
 
@@ -295,7 +292,7 @@ contract CLPDSapphireTest is Test {
         vm.stopPrank();
 
         vm.startPrank(mainAuditor);
-        (,,,string memory action,,) = clpd.viewLastDecryptedData();
+        (address decryptedFrom, address decryptedTo, uint256 decryptedAmount, string memory action, uint256 timestamp) = clpd.viewLastDecryptedData();
         assertEq(action, "mint", "Should decrypt mint operation");
         vm.stopPrank();
 
@@ -305,7 +302,7 @@ contract CLPDSapphireTest is Test {
         vm.stopPrank();
 
         vm.startPrank(mainAuditor);
-        (,,,action,,) = clpd.viewLastDecryptedData();
+        (decryptedFrom, decryptedTo, decryptedAmount, action, timestamp) = clpd.viewLastDecryptedData();
         assertEq(action, "burn", "Should decrypt burn operation");
         vm.stopPrank();
 
@@ -315,7 +312,8 @@ contract CLPDSapphireTest is Test {
         vm.stopPrank();
 
         vm.startPrank(mainAuditor);
-        (,,,action,,) = clpd.viewLastDecryptedData();
+        (decryptedFrom, decryptedTo, decryptedAmount, action, timestamp) = clpd.viewLastDecryptedData();
         assertEq(action, "bridge", "Should decrypt bridge operation");
         vm.stopPrank();
     }
+}
