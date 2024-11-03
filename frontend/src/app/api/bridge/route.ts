@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { AuthService, NetworkService, BridgeService } from "./services";
 import { formatEther } from "viem";
-export const maxDuration = 120;
+export const maxDuration = 60;
 
 export async function POST(request: Request) {
   try {
