@@ -1,9 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "./erc20p.sol";
+import "./erc20_private.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@oasisprotocol/sapphire-contracts/contracts/Sapphire.sol";
+import "../node_modules/@oasisprotocol/sapphire-contracts/contracts/Sapphire.sol";
+
+/**
+ * @dev Contract deployed on Sapphire Testnet
+ * @notice You can view the deployed contract at:
+ * https://explorer.oasis.io/testnet/sapphire/address/0xE65d126b56b1BF3Dd1f31057ffC1dabD53465b6e
+*/
 
 contract CLPD is ERC20P, Ownable {
     // Constants
@@ -101,7 +107,7 @@ contract CLPD is ERC20P, Ownable {
     event TokensRevoked(address indexed user, uint256 amount, address receiver);
 
     // Initialize contract with token name, symbol and generate encryption keys
-    constructor() ERC20P("_tokenName", "_tokenSymbol") Ownable() {
+    constructor() ERC20P("_tokenName", "_tokenSymbol") Ownable(msg.sender) {
         _tokenName = "CLPD";
         _tokenSymbol = "CLPD";
 
