@@ -82,40 +82,56 @@ export class BridgeService {
     networkIn: string,
     networkOut: string,
     isPreBridge: boolean
-  ): Promise<void> {
+): Promise<void> {
     const BANK_BALANCE = ethers.parseUnits("5691918", 18);
     const agentPK = process.env.PK_RECHARGE_ETH_CLPD!;
 
-    // Actualizar en red origen
-    await this.updateNetworkApiData(networkIn, amount, BANK_BALANCE, agentPK, isPreBridge);
-    // Actualizar en red destino
-    await this.updateNetworkApiData(networkOut, amount, BANK_BALANCE, agentPK, isPreBridge);
-  }
+    // Obtener totalSupply de ambas cadenas
+    const contractIn = this.networkService.getContract(networkIn);
+    const contractOut = this.networkService.getContract(networkOut);
+    
+    const totalSupplyIn = await contractIn.totalSupply();
+    const totalSupplyOut = await contractOut.totalSupply();
 
-  private async updateNetworkApiData(
+    // Calcular nuevo chainSupply para cada red
+    let newChainSupplyIn: bigint;
+    let newChainSupplyOut: bigint;
+
+    if (isPreBridge) {
+        // Pre-bridge: restar amount de la red origen
+        newChainSupplyIn = totalSupplyIn - amount;
+        newChainSupplyOut = totalSupplyOut;
+    } else {
+        // Post-bridge: sumar amount en la red destino
+        newChainSupplyIn = totalSupplyIn;
+        newChainSupplyOut = totalSupplyOut + amount;
+    }
+
+    // Calcular totalChainSupply combinado para ambas redes
+    const combinedChainSupply = newChainSupplyIn + newChainSupplyOut;
+
+    // Actualizar en ambas redes con el mismo combinedChainSupply
+    await this.updateNetworkApiData(networkIn, BANK_BALANCE, combinedChainSupply, agentPK);
+    await this.updateNetworkApiData(networkOut, BANK_BALANCE, combinedChainSupply, agentPK);
+}
+
+private async updateNetworkApiData(
     network: string,
-    amount: bigint,
     bankBalance: bigint,
-    agentPK: string,
-    isPreBridge: boolean
-  ): Promise<void> {
+    combinedChainSupply: bigint,
+    agentPK: string
+): Promise<void> {
     const provider = await this.networkService.getProvider(network);
     const contract = this.networkService.getContract(network);
     const config = this.networkService.getConfig(network);
-
+    
     const agentWallet = new ethers.Wallet(agentPK, provider);
     const contractWithSigner: any = contract.connect(agentWallet);
-
-    // Obtener totalSupply actual y modificarlo según la operación
-    const currentSupply = await contract.totalSupply();
-    const newChainSupply = isPreBridge
-      ? currentSupply - amount // Reducir antes del bridge
-      : currentSupply + amount; // Aumentar después del bridge
 
     console.log(`📊 Updating API data in ${network}...`);
     const method = network === "baseSepolia" ? "verifyValueAPI" : "updateApiData";
     const arg =
-      network === "baseSepolia" ? [newChainSupply, bankBalance] : [bankBalance, newChainSupply];
+      network === "baseSepolia" ? [combinedChainSupply, bankBalance] : [bankBalance, combinedChainSupply];
     const updateTx = await contractWithSigner[method](...arg, {
       gasLimit: config.isEncrypted ? 10000000 : undefined,
     });
