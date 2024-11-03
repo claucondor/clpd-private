@@ -31,7 +31,7 @@ export class NetworkService {
       rpc: sapphireTestnet.rpcUrls.default.http[0],
       contractAddress: addresses.sapphireTestnet.CLPD.address,
       abi: CLPD_ABI_SAPPHIRE,
-      minGasLimit: "0.001",
+      minGasLimit: "0.5",
       isEncrypted: true,
     },
   };

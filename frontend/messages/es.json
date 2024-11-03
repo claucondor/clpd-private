@@ -284,7 +284,7 @@
     "bridgePending": "Envío en curso",
     "stepSuccessBridgeDescription": "La transferencia se ha completado con éxito.",
     "stepPendingBridgeDescription": "La transferencia está en proceso.",
-    "createbridge": "Crear envío",
-    "submit": "Enviar"
+    "submit": "Enviar",
+    "bridge": "Enviar"
   }
 }

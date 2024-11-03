@@ -284,7 +284,7 @@
     "bridgePending": "Bridge in progress",
     "stepSuccessBridgeDescription": "The transfer has been completed successfully.",
     "stepPendingBridgeDescription": "The transfer is in progress.",
-    "createbridge": "Create bridge",
+    "bridge": "Bridge",
     "submit": "Submit"
   }
 }

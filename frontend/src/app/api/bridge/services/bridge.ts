@@ -82,14 +82,14 @@ export class BridgeService {
     networkIn: string,
     networkOut: string,
     isPreBridge: boolean
-): Promise<void> {
-    const BANK_BALANCE = ethers.parseUnits("5691918", 18);
+  ): Promise<void> {
+    const BANK_BALANCE = ethers.parseUnits("5991918", 18);
     const agentPK = process.env.PK_RECHARGE_ETH_CLPD!;
 
     // Obtener totalSupply de ambas cadenas
     const contractIn = this.networkService.getContract(networkIn);
     const contractOut = this.networkService.getContract(networkOut);
-    
+
     const totalSupplyIn = await contractIn.totalSupply();
     const totalSupplyOut = await contractOut.totalSupply();
 
@@ -98,40 +98,51 @@ export class BridgeService {
     let newChainSupplyOut: bigint;
 
     if (isPreBridge) {
-        // Pre-bridge: restar amount de la red origen
-        newChainSupplyIn = totalSupplyIn - amount;
-        newChainSupplyOut = totalSupplyOut;
+      console.log("📊 Pre-bridge amounts:");
+      console.log("- Total supply in source chain:", totalSupplyIn.toString());
+      console.log("- Amount to bridge:", amount.toString());
+      // Pre-bridge: restar amount de la red origen
+      newChainSupplyIn = totalSupplyIn - amount;
+      newChainSupplyOut = totalSupplyOut;
+      console.log("- New chain supply in source:", newChainSupplyIn.toString());
     } else {
-        // Post-bridge: sumar amount en la red destino
-        newChainSupplyIn = totalSupplyIn;
-        newChainSupplyOut = totalSupplyOut + amount;
+      console.log("📊 Post-bridge amounts:");
+      console.log("- Total supply in target chain:", totalSupplyOut.toString());
+      console.log("- Amount bridged:", amount.toString());
+      // Post-bridge: sumar amount en la red destino
+      newChainSupplyIn = totalSupplyIn;
+      newChainSupplyOut = totalSupplyOut + amount;
+      console.log("- New chain supply in target:", newChainSupplyOut.toString());
     }
 
     // Calcular totalChainSupply combinado para ambas redes
     const combinedChainSupply = newChainSupplyIn + newChainSupplyOut;
+    console.log("📈 Combined chain supply:", combinedChainSupply.toString());
 
     // Actualizar en ambas redes con el mismo combinedChainSupply
     await this.updateNetworkApiData(networkIn, BANK_BALANCE, combinedChainSupply, agentPK);
     await this.updateNetworkApiData(networkOut, BANK_BALANCE, combinedChainSupply, agentPK);
-}
+  }
 
-private async updateNetworkApiData(
+  private async updateNetworkApiData(
     network: string,
     bankBalance: bigint,
     combinedChainSupply: bigint,
     agentPK: string
-): Promise<void> {
+  ): Promise<void> {
     const provider = await this.networkService.getProvider(network);
     const contract = this.networkService.getContract(network);
     const config = this.networkService.getConfig(network);
-    
+
     const agentWallet = new ethers.Wallet(agentPK, provider);
     const contractWithSigner: any = contract.connect(agentWallet);
 
     console.log(`📊 Updating API data in ${network}...`);
     const method = network === "baseSepolia" ? "verifyValueAPI" : "updateApiData";
     const arg =
-      network === "baseSepolia" ? [combinedChainSupply, bankBalance] : [bankBalance, combinedChainSupply];
+      network === "baseSepolia"
+        ? [combinedChainSupply, bankBalance]
+        : [bankBalance, combinedChainSupply];
     const updateTx = await contractWithSigner[method](...arg, {
       gasLimit: config.isEncrypted ? 10000000 : undefined,
     });
