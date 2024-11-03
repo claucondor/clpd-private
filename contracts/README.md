@@ -112,7 +112,7 @@ forge test -vvvv --match-path test/CLPD_BaseSepolia.t.sol
 - Oracle ROFL: [View on Explorer](https://explorer.oasis.io/testnet/sapphire/address/0xEdDa5130fD503445AB7c4520DA7ef1b55Be0372A)
 
 ### Base Sepolia
-- CLPD Token: [View on Explorer](https://sepolia.basescan.org/address/0x23bbF7198Db6FCC09D0dee02678b7d60176facC6)
+- CLPD Token: [View on Explorer](https://sepolia.basescan.org/address/0xb00C1946fFADE1Ddf40f9957E659bA3CCb8c843A)
 
 ## Security Considerations
 

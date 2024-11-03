@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 /**
  * @dev Contract deployed on Base Sepolia
  * @notice You can view the deployed contract at:
- * https://sepolia.basescan.org/address/0x23bbF7198Db6FCC09D0dee02678b7d60176facC6
+ * https://sepolia.basescan.org/address/0xb00C1946fFADE1Ddf40f9957E659bA3CCb8c843A
 */
 
 // Main contract for CLPD that inherits from ERC20 and Ownable
@@ -105,8 +105,6 @@ contract CLPD is ERC20, Ownable {
 
     // Verify and update API bank value and minting permission using Oracle data
     function verifyValueAPI(uint256 totalSupplyAllChains, uint256 currentBankBalance) public onlyAgent {
-        require(apiDataBank != currentBankBalance, "It is the same value");
-
         apiDataBank = currentBankBalance;
         apiDataChains = totalSupplyAllChains;
 

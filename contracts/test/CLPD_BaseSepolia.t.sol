@@ -9,7 +9,7 @@ import {CLPD} from "../src/CLPD_BaseSepolia.sol";
  * forge test -vvvvv --match-path test/CLPD_BaseSepolia.t.sol --fork-url https://sepolia.base.org/
  *  
  * @dev Contract deployed on Base Sepolia
- * https://sepolia.basescan.org/address/0x23bbF7198Db6FCC09D0dee02678b7d60176facC6
+ * https://sepolia.basescan.org/address/0xb00C1946fFADE1Ddf40f9957E659bA3CCb8c843A
 */
 
 contract CLPDTest is Test {
@@ -20,7 +20,7 @@ contract CLPDTest is Test {
     address public account2 = 0x9F693ea18DA08824E729d5efc343Dd78254a9302; // No Agent and no Owner of the real contract
 
     function setUp() public {
-        clpd = CLPD(0x23bbF7198Db6FCC09D0dee02678b7d60176facC6);
+        clpd = CLPD(0xb00C1946fFADE1Ddf40f9957E659bA3CCb8c843A);
         
         // Transfer 10,000 tokens (with 18 decimals) to account1 and account2
         uint256 transferAmount = 10_000 * 10**18; // 10,000 tokens
