@@ -1,5 +1,6 @@
-import { BigQuery } from '@google-cloud/bigquery';
-import { config } from '@internal';
+import { BigQuery } from "@google-cloud/bigquery";
+import { config } from "@internal";
+import { DiscordNotificationService, NotificationType } from "@internal/notifications";
 
 interface VaultBalanceData {
   timestamp: Date;
@@ -8,8 +9,10 @@ interface VaultBalanceData {
 
 export class VaultBalanceStorage {
   private bigquery: BigQuery;
-  private datasetId: string = 'clpd_vault_data';
-  private tableId: string = 'balance_history';
+  private datasetId: string = "clpd_vault_data";
+  private tableId: string = "balance_history";
+  private lastErrorNotification: number = 0;
+  private readonly ERROR_COOLDOWN = 15 * 60 * 1000; // 15 minutes in milliseconds
 
   constructor() {
     this.bigquery = new BigQuery({
@@ -17,34 +20,30 @@ export class VaultBalanceStorage {
     });
 
     // Ensure the table exists upon instantiation
-    this.createTableIfNotExists().catch(error => {
-      console.error('❌ Error ensuring the table exists:', error);
+    this.createTableIfNotExists().catch((error) => {
+      console.error("❌ Error ensuring the table exists:", error);
     });
   }
 
   public async saveBalance(balance: number): Promise<void> {
     const row = {
       timestamp: BigQuery.timestamp(new Date()),
-      balance: balance
+      balance: balance,
     };
 
     try {
-      await this.bigquery
-        .dataset(this.datasetId)
-        .table(this.tableId)
-        .insert([row]);
-      console.log('✅ Balance saved to BigQuery');
+      await this.bigquery.dataset(this.datasetId).table(this.tableId).insert([row]);
+      console.log("✅ Balance saved to BigQuery");
     } catch (error: any) {
-      // Handle specific BigQuery errors if necessary
-      console.error('❌ Error saving to BigQuery:', error);
+      console.error("❌ Error saving to BigQuery:", error);
       throw error;
     }
   }
 
   public async createTableIfNotExists(): Promise<void> {
     const schema = [
-      { name: 'timestamp', type: 'TIMESTAMP' },
-      { name: 'balance', type: 'FLOAT' },
+      { name: "timestamp", type: "TIMESTAMP" },
+      { name: "balance", type: "FLOAT" },
     ];
 
     try {
@@ -54,12 +53,12 @@ export class VaultBalanceStorage {
       const [exists] = await table.exists();
       if (!exists) {
         await table.create({ schema });
-        console.log('✅ Table created in BigQuery');
+        console.log("✅ Table created in BigQuery");
       } else {
-        console.log('ℹ️ Table already exists in BigQuery');
+        console.log("ℹ️ Table already exists in BigQuery");
       }
     } catch (error: any) {
-      console.error('❌ Error creating table in BigQuery:', error);
+      console.error("❌ Error creating table in BigQuery:", error);
       throw error;
     }
   }
@@ -76,17 +75,19 @@ export class VaultBalanceStorage {
       const [rows] = await this.bigquery.query(query);
       return rows.length > 0 ? rows[0].balance : null;
     } catch (error: any) {
-      console.error('❌ Error fetching current balance:', error);
+      console.error("❌ Error fetching current balance:", error);
       throw error;
     }
   }
 
-  public async getHistoricalBalance(period: 'day' | 'week' | 'month' | 'year' = 'year'): Promise<VaultBalanceData[]> {
+  public async getHistoricalBalance(
+    period: "day" | "week" | "month" | "year" = "year"
+  ): Promise<VaultBalanceData[]> {
     const periodMap: { [key: string]: string } = {
-      day: 'INTERVAL 1 DAY',
-      week: 'INTERVAL 7 DAY',
-      month: 'INTERVAL 1 MONTH',
-      year: 'INTERVAL 365 DAY' // Cambiado de 'INTERVAL 1 YEAR' a 'INTERVAL 365 DAY'
+      day: "INTERVAL 1 DAY",
+      week: "INTERVAL 7 DAY",
+      month: "INTERVAL 1 MONTH",
+      year: "INTERVAL 365 DAY",
     };
 
     const interval = periodMap[period];
@@ -105,11 +106,35 @@ export class VaultBalanceStorage {
       const [rows] = await this.bigquery.query(query);
       return rows.map((row: any) => ({
         timestamp: row.timestamp instanceof Date ? row.timestamp : new Date(row.timestamp.value),
-        balance: row.balance
+        balance: row.balance,
       }));
     } catch (error: any) {
       console.error(`❌ Error fetching historical balance for ${period}:`, error);
       throw error;
+    }
+  }
+
+  public async notifyError(
+    error: Error,
+    discordService: DiscordNotificationService
+  ): Promise<void> {
+    const currentTime = Date.now();
+    if (currentTime - this.lastErrorNotification > this.ERROR_COOLDOWN) {
+      let errorMessage = `Error in Santander scraper: ${error.name} - ${error.message}`;
+      if (error.message.includes("Navigation after login failed")) {
+        errorMessage += " Possible causes: website changes, or incorrect credentials.";
+      } else if (error.message.includes("Failed to load Santander homepage")) {
+        errorMessage += " Check Santander website availability.";
+      }
+
+      await discordService.sendNotification(
+        errorMessage,
+        NotificationType.ERROR,
+        "Santander Scraper Error",
+        undefined,
+        "alert"
+      );
+      this.lastErrorNotification = currentTime;
     }
   }
 }

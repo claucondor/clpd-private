@@ -12,26 +12,32 @@ interface BurnRequest {
   rut: string;
   accountNumber: string;
   bankId: string;
-  user: NonNullable<RequestWithUser['user']>;
+  email: string;
+  user: NonNullable<RequestWithUser["user"]>;
 }
 
 function validateBurnRequest(req: RequestWithUser): BurnRequest | { error: string } {
-  const { amount, accountHolder, rut, accountNumber, bankId } = req.body;
+  const { amount, accountHolder, rut, accountNumber, bankId, email } = req.body;
   const user = req.user;
 
   if (!user) {
-    return { error: "User not authenticated" };
+    return { error: "Usuario no autenticado" };
   }
 
   if (!amount || isNaN(amount) || amount <= 0) {
-    return { error: "Invalid amount" };
+    return { error: "Monto inválido" };
   }
 
-  if (!accountHolder || !rut || !accountNumber || !bankId) {
-    return { error: "Missing required fields" };
+  if (!accountHolder || !rut || !accountNumber || !bankId || !email) {
+    return { error: "Faltan campos requeridos" };
   }
 
-  return { amount, accountHolder, rut, accountNumber, bankId, user };
+  // Validación básica del email
+  if (!/\S+@\S+\.\S+/.test(email)) {
+    return { error: "Email inválido" };
+  }
+
+  return { amount, accountHolder, rut, accountNumber, bankId, email, user };
 }
 
 export function registerBurnRequestHandler(depositService: DepositService) {
@@ -39,11 +45,11 @@ export function registerBurnRequestHandler(depositService: DepositService) {
     try {
       const validationResult = validateBurnRequest(req);
 
-      if ('error' in validationResult) {
+      if ("error" in validationResult) {
         return res.status(400).json({ error: validationResult.error });
       }
 
-      const { amount, accountHolder, rut, accountNumber, bankId, user } = validationResult;
+      const { amount, accountHolder, rut, accountNumber, bankId, email, user } = validationResult;
 
       const burnRequest = await depositService.requestBurn(
         user,
@@ -51,9 +57,9 @@ export function registerBurnRequestHandler(depositService: DepositService) {
         accountHolder,
         rut,
         accountNumber,
-        bankId
+        bankId,
+        email
       );
-
       const responseData = {
         id: burnRequest.id,
         email: burnRequest.email,
@@ -64,7 +70,7 @@ export function registerBurnRequestHandler(depositService: DepositService) {
 
       return res.status(201).json({
         message: "Burn request registered successfully",
-        burnRequest: responseData
+        burnRequest: responseData,
       });
     } catch (error) {
       console.error("Error registering burn request:", error);

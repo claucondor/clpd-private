@@ -1,18 +1,17 @@
 import { Firestore, CollectionReference, Query } from "@google-cloud/firestore";
-import crypto from 'crypto';
-
+import crypto from "crypto";
 
 export enum BurnStatus {
   RECEIVED_NOT_BURNED = "received_not_burned",
   BURNED = "burned",
-  REJECTED = "rejected"
+  REJECTED = "rejected",
 }
 
 export enum DepositStatus {
   PENDING = "pending",
   ACCEPTED_NOT_MINTED = "accepted_not_minted",
   ACCEPTED_MINTED = "accepted_minted",
-  REJECTED = "rejected"
+  REJECTED = "rejected",
 }
 
 export interface BankInfo {
@@ -23,6 +22,7 @@ export interface BankInfo {
 export interface BurnRequest {
   id: string;
   email: string;
+  userEmail: string;
   amount: number;
   status: BurnStatus;
   accountHolder: string;
@@ -75,7 +75,6 @@ export class DepositDataStorage {
     return this.firestore.collection(this.approvalMembersCollectionName);
   }
 
-
   private get depositCollection(): CollectionReference {
     return this.firestore.collection(this.depositCollectionName);
   }
@@ -91,7 +90,7 @@ export class DepositDataStorage {
   private get banksCollection(): CollectionReference {
     return this.firestore.collection(this.banksCollectionName);
   }
-  
+
   public async addNewDeposit(depositData: StoredDepositData): Promise<StoredDepositData> {
     try {
       await this.depositCollection.doc(depositData.id).set(depositData);
@@ -133,7 +132,9 @@ export class DepositDataStorage {
         dataToUpdate.approvedBy = memberName;
       }
       await this.depositCollection.doc(depositId).update(dataToUpdate);
-      console.log(`✅ Deposit data updated for ID ${depositId}${memberName ? ` by ${memberName}` : ''}`);
+      console.log(
+        `✅ Deposit data updated for ID ${depositId}${memberName ? ` by ${memberName}` : ""}`
+      );
     } catch (error) {
       console.error(`❌ Error updating deposit data for ID ${depositId}:`, error);
       throw error;
@@ -163,12 +164,11 @@ export class DepositDataStorage {
     }
   }
 
-
   public async getDepositsByStatus(status: DepositStatus): Promise<StoredDepositData[]> {
     try {
       const query: Query = this.depositCollection.where("status", "==", status);
       const snapshot = await query.get();
-      return snapshot.docs.map(doc => doc.data() as StoredDepositData);
+      return snapshot.docs.map((doc) => doc.data() as StoredDepositData);
     } catch (err: unknown) {
       if (err instanceof Error) {
         throw new Error(`Error getting deposits by status: ${err.message}`);
@@ -179,13 +179,13 @@ export class DepositDataStorage {
   }
 
   public async generateApprovalToken(depositId: string): Promise<string> {
-    const token = crypto.randomBytes(32).toString('hex');
+    const token = crypto.randomBytes(32).toString("hex");
     const expiresAt = Date.now() + 24 * 60 * 60 * 1000; // 24 hours validity
 
     try {
       await this.approvalTokenCollection.doc(token).set({
         depositId,
-        expiresAt
+        expiresAt,
       });
       console.log(`✅ Approval token generated for deposit ID ${depositId}`);
       return token;
@@ -225,18 +225,20 @@ export class DepositDataStorage {
   }
 
   public async addApprovalMember(name: string, password: string): Promise<void> {
-    const passwordHash = crypto.createHash('sha256').update(password).digest('hex');
+    const passwordHash = crypto.createHash("sha256").update(password).digest("hex");
     await this.approvalMembersCollection.add({ name, passwordHash });
   }
 
   public async validateApprovalMember(password: string): Promise<string | null> {
-    const passwordHash = crypto.createHash('sha256').update(password).digest('hex');
-    const snapshot = await this.approvalMembersCollection.where('passwordHash', '==', passwordHash).get();
-    
+    const passwordHash = crypto.createHash("sha256").update(password).digest("hex");
+    const snapshot = await this.approvalMembersCollection
+      .where("passwordHash", "==", passwordHash)
+      .get();
+
     if (snapshot.empty) {
       return null;
     }
-    
+
     return snapshot.docs[0].data().name;
   }
 
@@ -278,7 +280,10 @@ export class DepositDataStorage {
       await this.burnRequestCollection.doc(burnRequestId).update(updateData);
       console.log(`✅ Datos de solicitud de quema actualizados para ID ${burnRequestId}`);
     } catch (error) {
-      console.error(`❌ Error al actualizar datos de solicitud de quema para ID ${burnRequestId}:`, error);
+      console.error(
+        `❌ Error al actualizar datos de solicitud de quema para ID ${burnRequestId}:`,
+        error
+      );
       throw error;
     }
   }
@@ -287,7 +292,7 @@ export class DepositDataStorage {
     try {
       const query: Query = this.burnRequestCollection.where("status", "==", status);
       const snapshot = await query.get();
-      return snapshot.docs.map(doc => doc.data() as BurnRequest);
+      return snapshot.docs.map((doc) => doc.data() as BurnRequest);
     } catch (err: unknown) {
       if (err instanceof Error) {
         throw new Error(`Error al obtener solicitudes de quema por estado: ${err.message}`);
@@ -302,18 +307,18 @@ export class DepositDataStorage {
       await this.banksCollection.doc(bank.id).set(bank);
       console.log(`✅ Nuevo banco añadido: ${bank.name}`);
     } catch (error) {
-      console.error('Error al añadir banco:', error);
-      throw new Error('Error al añadir banco');
+      console.error("Error al añadir banco:", error);
+      throw new Error("Error al añadir banco");
     }
   }
 
   public async getBanks(): Promise<BankInfo[]> {
     try {
       const snapshot = await this.banksCollection.get();
-      return snapshot.docs.map(doc => doc.data() as BankInfo);
+      return snapshot.docs.map((doc) => doc.data() as BankInfo);
     } catch (error) {
-      console.error('Error al obtener bancos:', error);
-      throw new Error('Error al obtener bancos');
+      console.error("Error al obtener bancos:", error);
+      throw new Error("Error al obtener bancos");
     }
-  }  
+  }
 }

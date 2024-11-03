@@ -12,12 +12,14 @@ type RequestWithApiKey = Request & {
 
 export const Permission = async (req: RequestWithApiKey, res: Response, next: NextFunction) => {
   const whitelistedRoutes = [
-    '/vault/balance/storage',
-    '/deposits/approval-form/.+/.+',  
-    '/deposits/.+/approve-reject/.+'
+    "/vault/balance/storage",
+    "/deposits/approval-form/.+/.+",
+    "/deposits/.+/approve-reject/.+",
+    "/deposits/burn/.+/proof-form",
+    "/deposits/burn/.+/proof",
   ];
 
-  const isWhitelisted = whitelistedRoutes.some(route => {
+  const isWhitelisted = whitelistedRoutes.some((route) => {
     const regex = new RegExp(`^${route}$`);
     return regex.test(req.path);
   });

@@ -2,13 +2,16 @@ import multer from "multer";
 import { Request, Response } from "express";
 import { DepositService } from "@internal/deposits/deposits";
 import { StoredUserData } from "@internal/users/storage";
+import { BurnStatus } from "@internal/deposits";
 
 type RequestWithUser = Request & {
-  user?: Omit<StoredUserData, 'token' | 'createdAt' | 'updatedAt'>;
+  user?: Omit<StoredUserData, "token" | "createdAt" | "updatedAt">;
   file?: multer.Multer.File;
 };
 
-function validateBurnProofUploadRequest(req: RequestWithUser): { burnRequestId: string; file: multer.Multer.File } | { error: string } {
+function validateBurnProofUploadRequest(
+  req: RequestWithUser
+): { burnRequestId: string; file: multer.Multer.File } | { error: string } {
   const { burnRequestId } = req.params;
   const file = req.file;
 
@@ -28,23 +31,23 @@ export function uploadBurnProofHandler(depositService: DepositService) {
     try {
       const validationResult = validateBurnProofUploadRequest(req);
 
-      if ('error' in validationResult) {
+      if ("error" in validationResult) {
         return res.status(400).json({ error: validationResult.error });
       }
 
       const { burnRequestId, file } = validationResult;
 
-      await depositService.uploadBurnProof(
-        burnRequestId,
-        file.buffer,
-        file.originalname
-      );
+      await depositService.uploadBurnProof(burnRequestId, file.buffer, file.originalname);
+
+      const updatedBurnRequest = await depositService.getBurnRequest(burnRequestId);
 
       return res.status(200).json({
-        message: "Proof of burn uploaded successfully",
+        message: "Burn proof uploaded successfully",
+        status: updatedBurnRequest?.status || BurnStatus.RECEIVED_NOT_BURNED,
+        redirectUrl: `/deposits/burn/${burnRequestId}/proof-form`, // Redirect back to the form
       });
     } catch (error) {
-      console.error("Error uploading proof of burn:", error);
+      console.error("Error uploading burn proof:", error);
       return res.status(500).json({ error: "Internal server error" });
     }
   };
