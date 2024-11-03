@@ -62,7 +62,7 @@ export class BridgeService {
     userAddress: string,
     amount: bigint,
     networkOut: string
-  ): Promise<void> {
+): Promise<void> {
     const targetContract = this.networkService.getContract(networkOut);
     const targetConfig = this.networkService.getConfig(networkOut);
     const targetProvider = await this.networkService.getProvider(networkOut);
@@ -72,10 +72,28 @@ export class BridgeService {
 
     console.log("🌱 Minting tokens in target network...");
     const mintTx = await targetContractWithSigner.mint(userAddress, amount, {
-      gasLimit: targetConfig.isEncrypted ? 10000000 : undefined,
+        gasLimit: targetConfig.isEncrypted ? 10000000 : undefined,
     });
-    await mintTx.wait();
-  }
+    
+    console.log("Esperando confirmación del mint...");
+    const mintReceipt = await mintTx.wait();
+    
+    const eventName = networkOut === "baseSepolia" ? "ConfidentialBurn(bytes)" : "ConfidentialMint(bytes)";
+    const confidentialLog = mintReceipt.logs.find((log: ethers.Log) => 
+        log.topics[0] === ethers.id(eventName)
+    );
+    
+    if (confidentialLog) {
+        console.log(`\n=== Evento ${eventName} en ${networkOut} ===`);
+        const encryptedData = confidentialLog.args[0];
+        
+        console.log("\nDatos encriptados detallados:");
+        console.log("Tipo:", typeof encryptedData);
+        console.log("Es Hex:", ethers.isHexString(encryptedData));
+        console.log("Longitud:", encryptedData.length);
+        console.log("Datos:", encryptedData);
+    }
+}
 
   private async updateApiDataInBothNetworks(
     amount: bigint,
