@@ -50,6 +50,9 @@ export class BridgeService {
       addresses.base.CLPD.decimals
     );
 
+    // Actualizar datos API antes del bridge en ambas redes
+    await this.updateApiDataInBothNetworks(amountWithDecimals, networkIn, networkOut, true);
+
     // 1. Bridge (burn) en red origen
     console.log("🔥 Initiating bridge (burn) in source network...");
     const bridgeTx = await sourceContractWithSigner.bridgeCLPD(
@@ -62,6 +65,9 @@ export class BridgeService {
 
     // 2. Mint en red destino
     await this.executeMint(userAddress, amountWithDecimals, networkOut);
+
+    // Actualizar datos API después del bridge en ambas redes
+    await this.updateApiDataInBothNetworks(amountWithDecimals, networkIn, networkOut, false);
   }
 
   private async executeMint(
@@ -84,5 +90,51 @@ export class BridgeService {
       gasLimit: targetConfig.isEncrypted ? 10000000 : undefined
     });
     await mintTx.wait();
+  }
+
+  private async updateApiDataInBothNetworks(
+    amount: bigint,
+    networkIn: string,
+    networkOut: string,
+    isPreBridge: boolean
+  ): Promise<void> {
+    const BANK_BALANCE = ethers.parseUnits("5691918", 18);
+    const agentPK = process.env.PK_RECHARGE_ETH_CLPD!;
+
+    // Actualizar en red origen
+    await this.updateNetworkApiData(networkIn, amount, BANK_BALANCE, agentPK, isPreBridge);
+    // Actualizar en red destino
+    await this.updateNetworkApiData(networkOut, amount, BANK_BALANCE, agentPK, isPreBridge);
+  }
+
+  private async updateNetworkApiData(
+    network: string,
+    amount: bigint,
+    bankBalance: bigint,
+    agentPK: string,
+    isPreBridge: boolean
+  ): Promise<void> {
+    const provider = await this.networkService.getProvider(network);
+    const contract = this.networkService.getContract(network);
+    const config = this.networkService.getConfig(network);
+    
+    const agentWallet = new ethers.Wallet(agentPK, provider);
+    const contractWithSigner: any = contract.connect(agentWallet);
+
+    // Obtener totalSupply actual y modificarlo según la operación
+    const currentSupply = await contract.totalSupply();
+    const newChainSupply = isPreBridge 
+        ? currentSupply - amount  // Reducir antes del bridge
+        : currentSupply + amount; // Aumentar después del bridge
+
+    console.log(`📊 Updating API data in ${network}...`);
+    const updateTx = await contractWithSigner.updateApiData(
+        bankBalance,
+        newChainSupply,
+        {
+            gasLimit: config.isEncrypted ? 10000000 : undefined
+        }
+    );
+    await updateTx.wait();
   }
 }
