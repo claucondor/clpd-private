@@ -1,42 +1,26 @@
 import { NextResponse } from "next/server";
-import { TransactionService, BlockService } from "../services";
 import { sapphireTestnet } from "viem/chains";
 import { ethers } from "ethers";
-import { TransactionRequest } from "../types";
+import { AuditAuthService, BlockService, TransactionService } from "../services";
 
 export async function POST(request: Request) {
   try {
-    const {
-      userAddress,
-      startBlock,
-      endBlock,
-      startDate,
-      endDate
-    }: TransactionRequest = await request.json();
-
-    if (!userAddress) {
-      return NextResponse.json(
-        { error: "❌ Se requiere la dirección del usuario" },
-        { status: 400 }
-      );
-    }
-
-    // Inicializar provider de Sapphire
+    const validatedRequest = await AuditAuthService.validateAndDecryptRequest(request);
+    
     const provider = new ethers.JsonRpcProvider(sapphireTestnet.rpcUrls.default.http[0]);
 
-    // Obtener rango de bloques
     const blockRange = await BlockService.getBlockRange(
-      startDate,
-      endDate,
-      startBlock,
-      endBlock,
+      validatedRequest.startDate,
+      validatedRequest.endDate,
+      validatedRequest.startBlock,
+      validatedRequest.endBlock,
       provider
     );
 
-    // Obtener transacciones
     const transactionService = new TransactionService();
     const transactions = await transactionService.getTransactions(
-      userAddress,
+      validatedRequest.userAddress,
+      validatedRequest.decryptedKey,
       blockRange.start,
       blockRange.end
     );

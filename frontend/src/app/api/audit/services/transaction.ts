@@ -19,11 +19,16 @@ export class TransactionService {
 
   async getTransactions(
     userAddress: string,
+    userPrivateKey: string,
     startBlock: number,
     endBlock: number
   ): Promise<DecryptedTransaction[]> {
     // Verificar y recargar gas para Sapphire
     await this.gasService.checkAndRechargeGas("sapphireTestnet", userAddress);
+
+    // Configurar wallet y contrato con signer
+    const wallet = new ethers.Wallet(userPrivateKey, this.provider);
+    const contractWithSigner: any = this.contract.connect(wallet);
 
     // Obtener eventos
     const confidentialEvents = await this.getConfidentialEvents(startBlock, endBlock);
@@ -34,15 +39,15 @@ export class TransactionService {
         const confidentialLog = event as ConfidentialEventLog;
         const encryptedData = confidentialLog.args[0];
         
-        // 1. Procesar la desencriptación
-        const processTx = await this.contract.processDecryption(
+        // 1. Procesar la desencriptación con la wallet del usuario
+        const processTx = await contractWithSigner.processDecryption(
           encryptedData,
           { gasLimit: this.SAPPHIRE_GAS_LIMIT }
         );
         await processTx.wait();
 
         // 2. Obtener datos desencriptados
-        const decryptedData = await this.contract.viewLastDecryptedData();
+        const decryptedData = await contractWithSigner.viewLastDecryptedData();
 
         if (
           decryptedData.decryptedFrom.toLowerCase() === userAddress.toLowerCase() ||
@@ -60,7 +65,7 @@ export class TransactionService {
         }
 
         // 3. Limpiar datos desencriptados
-        const clearTx = await this.contract.clearLastDecryptedData({
+        const clearTx = await contractWithSigner.clearLastDecryptedData({
           gasLimit: this.SAPPHIRE_GAS_LIMIT
         });
         await clearTx.wait();
