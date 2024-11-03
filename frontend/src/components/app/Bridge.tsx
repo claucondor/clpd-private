@@ -1,6 +1,6 @@
 "use client";
 // react
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // next
 import Image from "next/image";
@@ -11,21 +11,17 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import CLPFlag from "../CLPFlag";
 
-// icons
-import { LucideArrowLeft, PencilLine } from "lucide-react";
-
 // translations
 import { useTranslations } from "next-intl";
 
 // utils
-import { cn, formatNumber } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { web3AuthInstance } from "@/provider/WagmiConfig";
 
 // http client
 import axios from "axios";
 
 // ui
-import { Checkbox } from "../ui/checkbox";
 import { LoadingSpinner } from "../ui/spinner";
 
 // context
@@ -34,8 +30,8 @@ import { useUserStore } from "@/context/global-store";
 // crypto
 import { useCLPDBalance } from "@/hooks/useCLPDBalance";
 import crypto from "crypto";
-import { useAccount } from "wagmi";
 import { sapphireTestnet } from "viem/chains";
+import { useAccount } from "wagmi";
 
 interface CreateStepsProps {
   t: (key: string) => string;
@@ -58,8 +54,8 @@ const formIds = {
 };
 
 const titles = (status: "pending" | "success", networkIn?: string) => ({
-  0: networkIn === "base" ? "createBridgeOrderOasis" : "createBridgeOrderBase",
-  1: status === "success" ? "bridgeSuccess" : "bridgeSuccess",
+  0: networkIn === "baseSepolia" ? "createBridgeOrderOasis" : "createBridgeOrderBase",
+  1: status === "success" ? "bridgeSuccess" : "bridgePending",
 });
 
 const createSteps = ({
@@ -206,7 +202,7 @@ const createSteps = ({
   },
   {
     step: 1,
-    title: t("bridgeSuccess"),
+    title: status === "success" ? t("bridgeSuccess") : t("bridgePending"),
     children: (
       <div className="flex flex-col items-start justify-center gap-2">
         <Image
@@ -302,14 +298,14 @@ const Bridge: React.FC = () => {
     }
 
     setBridgeAmount(value);
-    if (
-      Number(value) >
-      Number(networkIn === "baseSepolia" ? clpdBalanceFormatted : clpdBalanceFormattedOasis)
-    ) {
-      setErrorFields((prev) => [...prev, "amount"]);
-    } else {
-      setErrorFields((prev) => prev.filter((field) => field !== "amount"));
-    }
+    // if (
+    //   Number(value) >
+    //   Number(networkIn === "baseSepolia" ? clpdBalanceFormatted : clpdBalanceFormattedOasis)
+    // ) {
+    //   setErrorFields((prev) => [...prev, "amount"]);
+    // } else {
+    //   setErrorFields((prev) => prev.filter((field) => field !== "amount"));
+    // }
   };
 
   const handleBack = () => {
@@ -330,6 +326,7 @@ const Bridge: React.FC = () => {
   const handleTransfer = async () => {
     setLoading(true);
     try {
+      setCurrentStep(1);
       const userInfo = await web3AuthInstance.getUserInfo();
       const idToken = userInfo?.idToken;
       const privateKey = (await web3AuthInstance.provider?.request({
@@ -347,12 +344,14 @@ const Bridge: React.FC = () => {
       let encryptedPKey = cipher.update(privateKey, "utf8", "hex");
       encryptedPKey += cipher.final("hex");
 
+      // if (!userAddress || !networkIn || !networkOut || !amount || !idToken || !encryptedPKey) {
       const response = await axios.post(
         "/api/bridge",
         {
           userAddress,
-          bridgeAmount: bridgeAmount,
           networkIn,
+          networkOut: networkIn === "baseSepolia" ? "sapphireTestnet" : "baseSepolia",
+          amount: bridgeAmount,
           encryptedPKey,
           iv,
         },
@@ -367,7 +366,7 @@ const Bridge: React.FC = () => {
       if (response.status === 200) {
         // Manejar respuesta exitosa
         console.log("Transferencia iniciada:", response.data);
-        setCurrentStep(2);
+        setStatus("success");
         refetchCLPDBalance();
         // Actualizar el estado o navegar a la siguiente pantalla
       }
@@ -394,30 +393,38 @@ const Bridge: React.FC = () => {
     <Card
       className={cn(
         "w-full max-w-xl bg-white border-2 border-black rounded-xl shadow-brutalist max-md:w-[90%] mx-auto md:my-10 md:mb-20 relative",
-        currentStep === 1 && "bg-brand-green-pastel"
+        currentStep === 1 && status === "success" && "bg-brand-green-pastel",
+        currentStep === 1 && status === "pending" && "bg-brand-blue"
       )}
     >
       <CardContent
         className={cn(
           "space-y-4 text-black pt-6 transition-all duration-200",
-          currentStep === 1 && "text-black"
+          currentStep === 1 && status === "success" && "text-black",
+          currentStep === 1 && status === "pending" && "text-white"
         )}
       >
         <div className="flex flex-col rounded-xl border-none gap-3">
           <div className={cn("flex items-center justify-between gap-2.5")}>
             <h3
-              className={cn("text-xl font-helvetica font-bold", currentStep === 1 && "text-black")}
+              className={cn(
+                "text-xl font-helvetica font-bold",
+                currentStep === 1 && status === "success" && "text-black",
+                currentStep === 1 && status === "pending" && "text-white"
+              )}
             >
               {t(Object.values(titles(status, networkIn))[currentStep])}
             </h3>
 
             {/* Get CLPD Testnet */}
-            <Button
-              onClick={handleGetCLPDTesnet}
-              className="bg-brand-yellow-pastel border-2 border-black shadow-brutalist-sm text-black font-helvetica font-bold"
-            >
-              {t("getCLPDTesnet")}
-            </Button>
+            {currentStep === 0 && (
+              <Button
+                onClick={handleGetCLPDTesnet}
+                className="bg-brand-yellow-pastel border-2 border-black shadow-brutalist-sm text-black font-helvetica font-bold transition-all duration-200"
+              >
+                {loadingGetCLPDTesnet ? <LoadingSpinner /> : t("getCLPDTesnet")}
+              </Button>
+            )}
           </div>
           {
             createSteps({
@@ -438,7 +445,7 @@ const Bridge: React.FC = () => {
           }
         </div>
       </CardContent>
-      {currentStep !== 2 && (
+      {currentStep !== 1 && (
         <CardFooter>
           <Button
             className="w-full bg-brand-blue-dark border-2 border-black shadow-brutalist-sm py-4 h-full text-xl hover:bg-brand-blue-dark/90 text-white font-helvetica font-bold"

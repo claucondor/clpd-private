@@ -281,6 +281,7 @@
     },
     "receive": "Recibir",
     "bridgeSuccess": "Éxito en el envío",
+    "bridgePending": "Envío en curso",
     "stepSuccessBridgeDescription": "La transferencia se ha completado con éxito.",
     "stepPendingBridgeDescription": "La transferencia está en proceso.",
     "createbridge": "Crear envío",

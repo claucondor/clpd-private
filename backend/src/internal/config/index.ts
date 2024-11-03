@@ -11,10 +11,8 @@ export const DISCORD_ALERT_WEBHOOK_URL = process.env.DISCORD_ALERT_WEBHOOK_URL;
 export const DISCORD_DEPOSIT_WEBHOOK_URL = process.env.DISCORD_DEPOSIT_WEBHOOK_URL;
 export const DISCORD_WITHDRAWAL_WEBHOOK_URL = process.env.DISCORD_WITHDRAWAL_WEBHOOK_URL;
 
-
 export const RPC_URL = process.env.RPC_URL;
 export const RESEND_API_KEY = process.env.RESEND_API_KEY;
-
 
 function stopProgram(envKey: string) {
   console.error(`no ${envKey} specified in enviroment variable`);

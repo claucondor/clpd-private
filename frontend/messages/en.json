@@ -281,6 +281,7 @@
     },
     "receive": "Receive",
     "bridgeSuccess": "Bridge success",
+    "bridgePending": "Bridge in progress",
     "stepSuccessBridgeDescription": "The transfer has been completed successfully.",
     "stepPendingBridgeDescription": "The transfer is in progress.",
     "createbridge": "Create bridge",
