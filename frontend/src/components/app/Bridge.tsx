@@ -32,6 +32,7 @@ import { useCLPDBalance } from "@/hooks/useCLPDBalance";
 import crypto from "crypto";
 import { baseSepolia, sapphireTestnet } from "viem/chains";
 import { useAccount } from "wagmi";
+import { LucideArrowLeft } from "lucide-react";
 
 interface CreateStepsProps {
   t: (key: string) => string;
@@ -46,6 +47,7 @@ interface CreateStepsProps {
   clpdBalanceFormattedOasis: string;
   status: "pending" | "success";
   networkIn: "baseSepolia" | "sapphireTestnet";
+  networkOut: "baseSepolia" | "sapphireTestnet";
   handleChangeNetwork: (network: string) => void;
 }
 
@@ -72,6 +74,7 @@ const createSteps = ({
   clpdBalanceFormattedOasis,
   status,
   handleChangeNetwork,
+  networkOut,
 }: CreateStepsProps) => [
   {
     step: 0,
@@ -223,6 +226,29 @@ const createSteps = ({
             ? t("stepSuccessBridgeDescription")
             : t("stepPendingBridgeDescription")}
         </p>
+        <p
+          className={cn(
+            "text-xl font-helvetica font-light text-start text-white",
+            status === "success" && "font-bold text-black"
+          )}
+        >
+          {status === "success" &&
+            `You have successfully bridged ${amount} CLPD to ${
+              networkIn === "baseSepolia" ? "Oasis" : "Base"
+            }`}
+        </p>
+        <p
+          className={cn(
+            "text-xl font-helvetica font-light text-start text-white",
+            status === "success" && "font-bold text-black"
+          )}
+        >
+          New Balance:
+          <br />
+          Base: {clpdBalanceFormatted}
+          <br />
+          Oasis: {clpdBalanceFormattedOasis}
+        </p>
       </div>
     ),
   },
@@ -277,6 +303,7 @@ const Bridge: React.FC = () => {
       console.log(response.data);
       if (response.status === 200) {
         refetchCLPDBalance();
+        refetchCLPDBalanceOasis();
       }
     } catch (error) {
       console.error("Error al obtener CLPD de testnet:", error);
@@ -315,6 +342,7 @@ const Bridge: React.FC = () => {
   };
 
   const handleBack = () => {
+    setStatus("pending");
     setCurrentStep(currentStep - 1);
   };
 
@@ -393,6 +421,11 @@ const Bridge: React.FC = () => {
   const handleChangeNetwork = (network: string) => {
     setBridgeAmount("0");
     setNetworkIn(network as "baseSepolia" | "sapphireTestnet");
+    if (network === "sapphireTestnet") {
+      refetchCLPDBalanceOasis();
+    } else {
+      refetchCLPDBalance();
+    }
   };
 
   return (
@@ -412,6 +445,13 @@ const Bridge: React.FC = () => {
       >
         <div className="flex flex-col rounded-xl border-none gap-3">
           <div className={cn("flex items-center justify-between gap-2.5")}>
+            {currentStep === 1 && status === "success" && (
+              <LucideArrowLeft
+                className="w-10 h-10 cursor-pointer border-2 border-black rounded-full p-2"
+                onClick={handleBack}
+              />
+            )}
+
             <h3
               className={cn(
                 "text-xl font-helvetica font-bold",
@@ -445,6 +485,7 @@ const Bridge: React.FC = () => {
               clpdBalanceFormatted,
               status,
               networkIn,
+              networkOut: networkIn === "baseSepolia" ? "sapphireTestnet" : "baseSepolia",
               handleChangeNetwork,
               clpdBalanceFormattedOasis,
             })[currentStep].children
@@ -463,7 +504,7 @@ const Bridge: React.FC = () => {
               (() => {
                 switch (currentStep) {
                   case 0:
-                    return t("createbridge");
+                    return t("bridge");
                   case 1:
                     return t("submit");
                 }
