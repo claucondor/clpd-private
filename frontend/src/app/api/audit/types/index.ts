@@ -1,3 +1,5 @@
+import { ethers } from "ethers";
+
 export interface TransactionRequest {
     userAddress: string;
     startBlock?: number;
@@ -22,3 +24,16 @@ export interface TransactionRequest {
     startBlock: number;
     endBlock: number;
   }
+
+  export interface ConfidentialEventLog extends ethers.Log {
+    args: string[];
+    topics: string[];
+    data: string;
+    transactionHash: string;
+    blockNumber: number;
+    logIndex: number;
+}
+
+export interface ConfidentialTransactionReceipt extends ethers.TransactionReceipt {
+    logs: ConfidentialEventLog[];
+}
