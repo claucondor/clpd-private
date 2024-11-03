@@ -30,7 +30,7 @@ import { useUserStore } from "@/context/global-store";
 // crypto
 import { useCLPDBalance } from "@/hooks/useCLPDBalance";
 import crypto from "crypto";
-import { sapphireTestnet } from "viem/chains";
+import { baseSepolia, sapphireTestnet } from "viem/chains";
 import { useAccount } from "wagmi";
 
 interface CreateStepsProps {
@@ -75,7 +75,7 @@ const createSteps = ({
 }: CreateStepsProps) => [
   {
     step: 0,
-    title: t("createBridgeOrder"),
+    title: networkIn === "baseSepolia" ? t("createBridgeOrderBase") : t("createBridgeOrderOasis"),
     children: (
       <form id={formIds.bridge} onSubmit={handleSubmit} className="flex flex-col gap-2">
         <div className="flex max-md:flex-col md:items-center justify-between gap-2">
@@ -241,6 +241,7 @@ const Bridge: React.FC = () => {
   const { address: userAddress } = useAccount();
   const { clpdBalanceFormatted, refetch: refetchCLPDBalance } = useCLPDBalance({
     address: userAddress,
+    chainId: baseSepolia.id,
     _chainName: "baseSepolia",
   });
   const { clpdBalanceFormatted: clpdBalanceFormattedOasis, refetch: refetchCLPDBalanceOasis } =
@@ -253,6 +254,8 @@ const Bridge: React.FC = () => {
   const [status, setStatus] = useState<"pending" | "success">("pending");
 
   const [loadingGetCLPDTesnet, setLoadingGetCLPDTesnet] = useState<boolean>(false);
+
+  console.log("clpdBalanceFormatted", clpdBalanceFormatted);
 
   const handleGetCLPDTesnet = async () => {
     setLoadingGetCLPDTesnet(true);
@@ -272,6 +275,9 @@ const Bridge: React.FC = () => {
         }
       );
       console.log(response.data);
+      if (response.status === 200) {
+        refetchCLPDBalance();
+      }
     } catch (error) {
       console.error("Error al obtener CLPD de testnet:", error);
     } finally {
