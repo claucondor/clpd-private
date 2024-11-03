@@ -1,7 +1,7 @@
 import React from "react";
 import { http } from "viem";
 import { WagmiProvider, createConfig } from "wagmi";
-import { base, baseSepolia } from "wagmi/chains";
+import { base, baseSepolia, sapphireTestnet } from "wagmi/chains";
 import { coinbaseWallet } from "wagmi/connectors";
 import Web3AuthConnectorInstance from "./_Web3AuthConnectorInstance";
 
@@ -16,10 +16,11 @@ const config = createConfig({
     web3AuthConnector,
     // coinbaseWallet({ appName: "CLPD | Peso Chileno Digital", preference: "smartWalletOnly" }),
   ],
-  chains: [selectedChain],
+  chains: [selectedChain, sapphireTestnet, baseSepolia],
   transports: {
     [base.id]: http(),
     [baseSepolia.id]: http(),
+    [sapphireTestnet.id]: http(),
   },
 });
 

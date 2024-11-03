@@ -2,13 +2,14 @@ import { ethers } from "ethers";
 import { NetworkConfig } from "../types";
 import { addresses } from "@/constants/address";
 import CLPD_ABI from "@/constants/CLPD-abi.json";
+import BRIDGE_CLPD_ABI from "@/constants/bridge-clpd-abi.json";
 import CLPD_ABI_SAPPHIRE from "@/constants/clpd-sapphire-abi.json";
 import { baseSepolia, sapphireTestnet } from "viem/chains";
 
 export class NetworkService {
   private static instance: NetworkService;
   private providers: Record<string, ethers.Provider> = {};
-  
+
   private constructor() {}
 
   static getInstance(): NetworkService {
@@ -22,17 +23,17 @@ export class NetworkService {
     baseSepolia: {
       rpc: baseSepolia.rpcUrls.default.http[0],
       contractAddress: addresses.baseSepolia.CLPD.address,
-      abi: CLPD_ABI,
+      abi: BRIDGE_CLPD_ABI,
       minGasLimit: "0.0001",
-      isEncrypted: false
+      isEncrypted: false,
     },
     sapphireTestnet: {
       rpc: sapphireTestnet.rpcUrls.default.http[0],
       contractAddress: addresses.sapphireTestnet.CLPD.address,
       abi: CLPD_ABI_SAPPHIRE,
       minGasLimit: "0.001",
-      isEncrypted: true
-    }
+      isEncrypted: true,
+    },
   };
 
   getConfig(network: string): NetworkConfig {

@@ -43,6 +43,7 @@ export const useCLPDBalance = ({
   });
 
   const clpdBalanceFormatted = useMemo(() => {
+    console.log("clpdBalance", clpdBalance.data, chainName);
     if (!clpdBalance.data || !clpdBalance.data[0]) return "0";
     return Number(formatUnits(clpdBalance.data?.[0]! as bigint, 18) || 0).toFixed(2);
   }, [clpdBalance.data]);
