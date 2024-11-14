@@ -736,6 +736,8 @@ const Withdraw: React.FC = () => {
     }
   };
 
+  // TODO: agregar un texto de warning para retirar clpd maximo 250mil por primera vez
+
   return (
     <Card
       className={cn(

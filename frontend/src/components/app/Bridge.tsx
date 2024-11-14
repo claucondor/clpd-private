@@ -243,7 +243,7 @@ const createSteps = ({
             status === "success" && "font-bold text-black"
           )}
         >
-          New Balance:
+          {status === "success" ? "New" : "Actual"} Balance:
           <br />
           Base: {clpdBalanceFormatted}
           <br />
